@@ -15,6 +15,7 @@ import DefaultLayout from './layout/DefaultLayout';
 import Loader from './common/Loader';
 import SignIn from './pages/Authentication/SignIn';
 import PageTitle from './components/PageTitle';
+// import SignUp from './pages/Authentication/SignUp'; // Uncomment if SignUp component exists
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -137,7 +138,8 @@ function App() {
           element={
             <>
               <PageTitle title="Signup | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <SignUp />
+              {/* Uncomment the next line if you have a SignUp component */}
+              {/* <SignUp /> */}
             </>
           }
         />
