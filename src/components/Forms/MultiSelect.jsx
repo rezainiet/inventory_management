@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-
 const MultiSelect = ({ id }) => {
     const [options, setOptions] = useState([]);
     const [selected, setSelected] = useState([]);
@@ -10,7 +9,7 @@ const MultiSelect = ({ id }) => {
 
     useEffect(() => {
         const loadOptions = () => {
-            const select = document.getElementById(id) | null;
+            const select = document.getElementById(id) || null;
             if (select) {
                 const newOptions = [];
                 for (let i = 0; i < select.options.length; i++) {
@@ -27,61 +26,47 @@ const MultiSelect = ({ id }) => {
         loadOptions();
     }, [id]);
 
-    const open = () => {
-        setShow(true);
-    };
-
-    const isOpen = () => {
-        return show === true;
-    };
+    const open = () => setShow(true);
+    const close = () => setShow(false);
+    const isOpen = () => show;
 
     const select = (index, event) => {
         const newOptions = [...options];
+        const isSelected = newOptions[index].selected;
 
-        if (!newOptions[index].selected) {
-            newOptions[index].selected = true;
-            newOptions[index].element = event.currentTarget;
-            setSelected([...selected, index]);
-        } else {
-            const selectedIndex = selected.indexOf(index);
-            if (selectedIndex !== -1) {
-                newOptions[index].selected = false;
-                setSelected(selected.filter((i) => i !== index));
-            }
-        }
-
+        newOptions[index].selected = !isSelected;
         setOptions(newOptions);
+
+        if (isSelected) {
+            setSelected(selected.filter((i) => i !== index));
+        } else {
+            setSelected([...selected, index]);
+        }
     };
 
     const remove = (index) => {
         const newOptions = [...options];
-        const selectedIndex = selected.indexOf(index);
-
-        if (selectedIndex !== -1) {
-            newOptions[index].selected = false;
-            setSelected(selected.filter((i) => i !== index));
-            setOptions(newOptions);
-        }
+        newOptions[index].selected = false;
+        setOptions(newOptions);
+        setSelected(selected.filter((i) => i !== index));
     };
 
-    const selectedValues = () => {
-        return selected.map((option) => options[option].value);
-    };
+    const selectedValues = () => selected.map((index) => options[index].value).join(', ');
 
     useEffect(() => {
         const clickHandler = ({ target }) => {
-            if (!dropdownRef.current) return;
+            if (!dropdownRef.current || !trigger.current) return;
             if (
                 !show ||
                 dropdownRef.current.contains(target) ||
                 trigger.current.contains(target)
             )
                 return;
-            setShow(false);
+            close();
         };
         document.addEventListener('click', clickHandler);
         return () => document.removeEventListener('click', clickHandler);
-    });
+    }, [show]);
 
     return (
         <div className="relative z-50">
@@ -97,7 +82,7 @@ const MultiSelect = ({ id }) => {
                 </select>
 
                 <div className="flex flex-col items-center">
-                    <input name="values" type="hidden" defaultValue={selectedValues()} />
+                    <input name="values" type="hidden" value={selectedValues()} />
                     <div className="relative z-20 inline-block w-full">
                         <div className="relative flex flex-col items-center">
                             <div ref={trigger} onClick={open} className="w-full">
@@ -116,6 +101,7 @@ const MultiSelect = ({ id }) => {
                                                         onClick={() => remove(index)}
                                                         className="cursor-pointer pl-2 hover:text-danger"
                                                     >
+                                                        {/* Add SVG icon or remove if not needed */}
                                                         <svg
                                                             className="fill-current"
                                                             role="button"
@@ -141,7 +127,7 @@ const MultiSelect = ({ id }) => {
                                                 <input
                                                     placeholder="Select an option"
                                                     className="h-full w-full appearance-none bg-transparent p-1 px-2 outline-none"
-                                                    defaultValue={selectedValues()}
+                                                    value={selectedValues()}
                                                 />
                                             </div>
                                         )}
@@ -152,6 +138,7 @@ const MultiSelect = ({ id }) => {
                                             onClick={open}
                                             className="h-6 w-6 cursor-pointer outline-none focus:outline-none"
                                         >
+                                            {/* Add SVG icon or remove if not needed */}
                                             <svg
                                                 width="24"
                                                 height="24"
@@ -174,11 +161,8 @@ const MultiSelect = ({ id }) => {
                             </div>
                             <div className="w-full px-4">
                                 <div
-                                    className={`max-h-select absolute top-full left-0 z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${isOpen() ? '' : 'hidden'
-                                        }`}
+                                    className={`max-h-select absolute top-full left-0 z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${isOpen() ? '' : 'hidden'}`}
                                     ref={dropdownRef}
-                                    onFocus={() => setShow(true)}
-                                    onBlur={() => setShow(false)}
                                 >
                                     <div className="flex w-full flex-col">
                                         {options.map((option, index) => (
@@ -188,8 +172,7 @@ const MultiSelect = ({ id }) => {
                                                     onClick={(event) => select(index, event)}
                                                 >
                                                     <div
-                                                        className={`relative flex w-full items-center border-l-2 border-transparent p-2 pl-2 ${option.selected ? 'border-primary' : ''
-                                                            }`}
+                                                        className={`relative flex w-full items-center border-l-2 border-transparent p-2 pl-2 ${option.selected ? 'border-primary' : ''}`}
                                                     >
                                                         <div className="flex w-full items-center">
                                                             <div className="mx-2 leading-6">

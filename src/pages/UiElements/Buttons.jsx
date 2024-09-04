@@ -11,7 +11,7 @@ const Buttons = () => {
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                        Normal Button
+                        NormalInventory
                     </h3>
                 </div>
 
@@ -21,28 +21,28 @@ const Buttons = () => {
                             to="#"
                             className="inline-flex items-center justify-center bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-md bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-full bg-primary py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-md border border-primary py-4 px-10 text-center font-medium text-primary hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
                     </div>
 
@@ -51,28 +51,28 @@ const Buttons = () => {
                             to="#"
                             className="inline-flex items-center justify-center bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-md bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-full bg-meta-3 py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-md border border-meta-3 py-4 px-10 text-center font-medium text-meta-3 hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
                     </div>
 
@@ -81,38 +81,38 @@ const Buttons = () => {
                             to="#"
                             className="inline-flex items-center justify-center bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-md bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-full bg-black py-4 px-10 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
 
                         <Link
                             to="#"
                             className="inline-flex items-center justify-center rounded-md border border-black py-4 px-10 text-center font-medium text-black hover:bg-opacity-90 lg:px-8 xl:px-10"
                         >
-                            Button
+                            Inventory
                         </Link>
                     </div>
                 </div>
             </div>
 
-            {/* <!-- Button With Icon Items --> */}
+            {/* <!--Inventory With Icon Items --> */}
             <div className="mb-10 rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
                 <div className="border-b border-stroke px-7 py-4 dark:border-strokedark">
                     <h3 className="font-medium text-black dark:text-white">
-                        Button With Icon
+                        Inventory With Icon
                     </h3>
                 </div>
 
@@ -141,7 +141,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -167,7 +167,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -193,7 +193,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -219,7 +219,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
                     </div>
 
@@ -251,7 +251,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -281,7 +281,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -311,7 +311,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -341,7 +341,7 @@ const Buttons = () => {
                                     />
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
                     </div>
 
@@ -372,7 +372,7 @@ const Buttons = () => {
                                     </defs>
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -401,7 +401,7 @@ const Buttons = () => {
                                     </defs>
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -430,7 +430,7 @@ const Buttons = () => {
                                     </defs>
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
 
                         <Link
@@ -459,7 +459,7 @@ const Buttons = () => {
                                     </defs>
                                 </svg>
                             </span>
-                            Button With Icon
+                            Inventory With Icon
                         </Link>
                     </div>
                 </div>
