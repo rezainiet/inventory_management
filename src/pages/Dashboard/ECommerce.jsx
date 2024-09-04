@@ -1,11 +1,9 @@
-import React from 'react';
 import CardDataStats from '../../components/CardDataStats';
 import ChatCard from '../../components/Chat/ChatCard';
-// import ChartOne from '../../components/Charts/ChartOne';
-// import ChartThree from '../../components/Charts/ChartThree';
-// import ChartTwo from '../../components/Charts/ChartTwo';
-// import MapOne from '../../components/Maps/MapOne';
-// import TableOne from '../../components/Tables/TableOne';
+import ChartOne from '../../components/Charts/ChartOne';
+import ChartTwo from '../../components/Charts/ChartTwo';
+import ChartThree from '../../components/Charts/ChartThree';
+import TableOne from '../../components/Tables/TableOne';
 
 const ECommerce = () => {
     return (
@@ -53,7 +51,7 @@ const ECommerce = () => {
                         />
                     </svg>
                 </CardDataStats>
-                <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
+                <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelDown>
                     <svg
                         className="fill-primary dark:fill-white"
                         width="22"
@@ -98,12 +96,12 @@ const ECommerce = () => {
             </div>
 
             <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-                {/* <ChartOne /> */}
-                {/* <ChartTwo /> */}
-                {/* <ChartThree /> */}
+                <ChartOne />
+                <ChartTwo />
+                <ChartThree />
                 {/* <MapOne /> */}
                 <div className="col-span-12 xl:col-span-8">
-                    {/* <TableOne /> */}
+                    <TableOne />
                 </div>
                 <ChatCard />
             </div>
