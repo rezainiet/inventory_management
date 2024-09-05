@@ -4,7 +4,6 @@ import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/logo.svg';
 import { svg8, svg9, svg10, svg11, svg13, uiElementIcon, dashboardIcon, chartIcon } from '../../SvgCollection';
 
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const location = useLocation();
     const { pathname } = location;
@@ -122,6 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                     />
                                                 </svg>
                                             </NavLink>
+
                                             <div
                                                 className={`translate transform overflow-hidden ${!open && 'hidden'
                                                     }`}
