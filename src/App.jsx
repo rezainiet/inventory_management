@@ -3,7 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
-import ECommerce from './pages/Dashboard/ECommerce';
+import Dashboard from './pages/Dashboard';
 import FormElements from './pages/Form/FormElements';
 import FormLayout from './pages/Form/FormLayout';
 import Profile from './pages/Profile';
@@ -15,6 +15,16 @@ import SignIn from './pages/Authentication/SignIn';
 import PageTitle from './components/PageTitle';
 import Tables from './pages/Tables';
 import Alerts from './pages/UiElements/Alerts';
+import InventoryTable from './components/Tables/InventoryManagement/InventoryTable';
+import AddEditProduct from './components/Tables/InventoryManagement/AddEditProduct';
+import StockTracking from './components/Tables/InventoryManagement/StockTracking';
+import SupplierList from './components/Tables/Supplier/SupplierList';
+import AddSupplier from './components/Tables/Supplier/AddSupplier';
+import OrderList from './components/Tables/Orders/OrderList';
+import OrderFulfillment from './components/Tables/Orders/OrderFulfillment';
+import TrackFulfillment from './components/Tables/Orders/TrackFulfillment';
+import SalesReport from './pages/ReportsAndAnalytics/SalesReport';
+import InventoryReport from './pages/ReportsAndAnalytics/InventoryReport';
 // import SignUp from './pages/Authentication/SignUp'; // Uncomment if SignUp component exists
 
 function App() {
@@ -39,7 +49,106 @@ function App() {
           element={
             <>
               <PageTitle title="Inventory Dashboard | Inventory of Koel Modish Apparels" />
-              <ECommerce />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <PageTitle title="Inventory Dashboard | Inventory of Koel Modish Apparels" />
+              <Dashboard />
+            </>
+          }
+        />
+        <Route
+          path="/inventory/list"
+          element={
+            <>
+              <PageTitle title="List | Inventory of Koel Modish Apparels" />
+              <InventoryTable />
+            </>
+          }
+        />
+        <Route
+          path="/inventory/add-edit"
+          element={
+            <>
+              <PageTitle title="List | Inventory of Koel Modish Apparels" />
+              <AddEditProduct />
+            </>
+          }
+        />
+        <Route
+          path="/inventory/stock-tracking"
+          element={
+            <>
+              <PageTitle title="List | Inventory of Koel Modish Apparels" />
+              <StockTracking />
+            </>
+          }
+        />
+        <Route
+          path="/supplier/list"
+          element={
+            <>
+              <PageTitle title="Supplier List | Inventory of Koel Modish Apparels" />
+              <SupplierList />
+            </>
+          }
+        />
+        <Route
+          path="/supplier/add"
+          element={
+            <>
+              <PageTitle title="Add Supplier | Inventory of Koel Modish Apparels" />
+              <AddSupplier />
+            </>
+          }
+        />
+        <Route
+          path="/orders/list"
+          element={
+            <>
+              <PageTitle title="Order List | Inventory of Koel Modish Apparels" />
+              <OrderList />
+            </>
+          }
+        />
+        <Route
+          path="/orders/fulfillment"
+          element={
+            <>
+              <PageTitle title="Order Fulfillment | Inventory of Koel Modish Apparels" />
+              <OrderFulfillment />
+            </>
+          }
+        />
+        <Route
+          path="/orders/tracking"
+          element={
+            <>
+              <PageTitle title="Track Fulfillment | Inventory of Koel Modish Apparels" />
+              <TrackFulfillment />
+            </>
+          }
+        />
+        <Route
+          path="/reports/sales"
+          element={
+            <>
+              <PageTitle title="Sales Report | Inventory of Koel Modish Apparels" />
+              <SalesReport />
+            </>
+          }
+        />
+        <Route
+          path="/reports/inventory"
+          element={
+            <>
+              <PageTitle title="Sales Report | Inventory of Koel Modish Apparels" />
+              <InventoryReport />
             </>
           }
         />

@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
-import Logo from '../../images/logo/logo.svg';
-import { svg8, svg9, svg10, svg11, svg13, uiElementIcon, dashboardIcon, chartIcon } from '../../SvgCollection';
-
+import Logo from '../../images/logo/inventory_logo.png';
+import { FaChartBar, FaCogs, FaBox, FaTruck, FaClipboardList, FaUsers, FaSignOutAlt, FaWarehouse, FaChartPie, FaFileExport } from 'react-icons/fa'; // Using icons from react-icons
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const location = useLocation();
@@ -70,7 +69,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     aria-expanded={sidebarOpen}
                     className="block lg:hidden"
                 >
-                    {svg8}
+                    <FaCogs />
                 </button>
             </div>
 
@@ -82,19 +81,26 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                         </h3>
 
                         <ul className="mb-6 flex flex-col gap-1.5">
+                            <li>
+                                <NavLink
+                                    to="/dashboard"
+                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('dashboard') && 'bg-graydark dark:bg-meta-4'
+                                        }`}
+                                >
+                                    <FaChartBar />
+                                    Dashboard
+                                </NavLink>
+                            </li>
+
                             <SidebarLinkGroup
-                                activeCondition={
-                                    pathname === '/' || pathname.includes('dashboard')
-                                }
+                                activeCondition={pathname.includes('inventory')}
                             >
                                 {(handleClick, open) => {
                                     return (
-                                        <React.Fragment>
+                                        <>
                                             <NavLink
                                                 to="#"
-                                                className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/' ||
-                                                    pathname.includes('dashboard')) &&
-                                                    'bg-graydark dark:bg-meta-4'
+                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('inventory') && 'bg-graydark dark:bg-meta-4'
                                                     }`}
                                                 onClick={(e) => {
                                                     e.preventDefault();
@@ -103,61 +109,52 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                         : setSidebarExpanded(true);
                                                 }}
                                             >
-                                                {dashboardIcon}
-                                                Dashboard
-                                                <svg
-                                                    className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                                                        }`}
-                                                    width="20"
-                                                    height="20"
-                                                    viewBox="0 0 20 20"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        clipRule="evenodd"
-                                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                                        fill=""
-                                                    />
-                                                </svg>
+                                                <FaWarehouse />
+                                                Inventory Management
                                             </NavLink>
-                                            <div
-                                                className={`translate transform overflow-hidden ${!open && 'hidden'
-                                                    }`}
-                                            >
+
+                                            <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
                                                 <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                                                     <li>
                                                         <NavLink
-                                                            to="/"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
+                                                            to="/inventory/list"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                                                         >
-                                                            Statistics
+                                                            Inventory List
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/inventory/add-edit"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Add/Edit Product
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/inventory/stock-tracking"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Stock Tracking
                                                         </NavLink>
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </React.Fragment>
+                                        </>
                                     );
                                 }}
                             </SidebarLinkGroup>
 
                             <SidebarLinkGroup
-                                activeCondition={
-                                    pathname === '/forms' || pathname.includes('forms')
-                                }
+                                activeCondition={pathname.includes('supplier')}
                             >
                                 {(handleClick, open) => {
                                     return (
-                                        <React.Fragment>
+                                        <>
                                             <NavLink
                                                 to="#"
-                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/forms' ||
-                                                    pathname.includes('forms')) &&
-                                                    'bg-graydark dark:bg-meta-4'
+                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('supplier') && 'bg-graydark dark:bg-meta-4'
                                                     }`}
                                                 onClick={(e) => {
                                                     e.preventDefault();
@@ -166,244 +163,245 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                         : setSidebarExpanded(true);
                                                 }}
                                             >
-                                                {svg9}
-                                                Forms
-                                                <svg
-                                                    className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                                                        }`}
-                                                    width="20"
-                                                    height="20"
-                                                    viewBox="0 0 20 20"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        clipRule="evenodd"
-                                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                                        fill=""
-                                                    />
-                                                </svg>
+                                                <FaTruck />
+                                                Supplier Management
                                             </NavLink>
-                                            <div
-                                                className={`translate transform overflow-hidden ${!open && 'hidden'
-                                                    }`}
-                                            >
+
+                                            <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
                                                 <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                                                     <li>
                                                         <NavLink
-                                                            to="/forms/form-elements"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
+                                                            to="/supplier/list"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                                                         >
-                                                            Form Elements
+                                                            Supplier List
                                                         </NavLink>
                                                     </li>
                                                     <li>
                                                         <NavLink
-                                                            to="/forms/form-layout"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
+                                                            to="/supplier/add"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                                                         >
-                                                            Form Layout
+                                                            Add/Edit Supplier
                                                         </NavLink>
                                                     </li>
                                                 </ul>
                                             </div>
-                                        </React.Fragment>
+                                        </>
+                                    );
+                                }}
+                            </SidebarLinkGroup>
+
+                            <SidebarLinkGroup
+                                activeCondition={pathname.includes('orders')}
+                            >
+                                {(handleClick, open) => {
+                                    return (
+                                        <>
+                                            <NavLink
+                                                to="#"
+                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('orders') && 'bg-graydark dark:bg-meta-4'
+                                                    }`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    sidebarExpanded
+                                                        ? handleClick()
+                                                        : setSidebarExpanded(true);
+                                                }}
+                                            >
+                                                <FaClipboardList />
+                                                Order Management
+                                            </NavLink>
+
+                                            <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
+                                                <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                                                    <li>
+                                                        <NavLink
+                                                            to="/orders/list"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Order List
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/orders/fulfillment"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Order Fulfillment
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/orders/tracking"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Track Fulfillment
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </>
+                                    );
+                                }}
+                            </SidebarLinkGroup>
+
+                            <SidebarLinkGroup
+                                activeCondition={pathname.includes('reports')}
+                            >
+                                {(handleClick, open) => {
+                                    return (
+                                        <>
+                                            <NavLink
+                                                to="#"
+                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('reports') && 'bg-graydark dark:bg-meta-4'
+                                                    }`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    sidebarExpanded
+                                                        ? handleClick()
+                                                        : setSidebarExpanded(true);
+                                                }}
+                                            >
+                                                <FaChartPie />
+                                                Reports and Analytics
+                                            </NavLink>
+
+                                            <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
+                                                <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                                                    <li>
+                                                        <NavLink
+                                                            to="/reports/sales"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Sales Reports
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/reports/inventory"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Inventory Reports
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/reports/export"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Export Reports
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </>
+                                    );
+                                }}
+                            </SidebarLinkGroup>
+
+                            <SidebarLinkGroup
+                                activeCondition={pathname.includes('users')}
+                            >
+                                {(handleClick, open) => {
+                                    return (
+                                        <>
+                                            <NavLink
+                                                to="#"
+                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('users') && 'bg-graydark dark:bg-meta-4'
+                                                    }`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    sidebarExpanded
+                                                        ? handleClick()
+                                                        : setSidebarExpanded(true);
+                                                }}
+                                            >
+                                                <FaUsers />
+                                                User Management
+                                            </NavLink>
+
+                                            <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
+                                                <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                                                    <li>
+                                                        <NavLink
+                                                            to="/users/roles"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            User Roles
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/users/manage"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Manage Users
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </>
+                                    );
+                                }}
+                            </SidebarLinkGroup>
+
+                            <SidebarLinkGroup
+                                activeCondition={pathname.includes('settings')}
+                            >
+                                {(handleClick, open) => {
+                                    return (
+                                        <>
+                                            <NavLink
+                                                to="#"
+                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('settings') && 'bg-graydark dark:bg-meta-4'
+                                                    }`}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    sidebarExpanded
+                                                        ? handleClick()
+                                                        : setSidebarExpanded(true);
+                                                }}
+                                            >
+                                                <FaCogs />
+                                                Settings
+                                            </NavLink>
+
+                                            <div className={`translate transform overflow-hidden ${!open && 'hidden'}`}>
+                                                <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                                                    <li>
+                                                        <NavLink
+                                                            to="/settings/profile"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            Profile
+                                                        </NavLink>
+                                                    </li>
+                                                    <li>
+                                                        <NavLink
+                                                            to="/settings/system"
+                                                            className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
+                                                        >
+                                                            System Settings
+                                                        </NavLink>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </>
                                     );
                                 }}
                             </SidebarLinkGroup>
 
                             <li>
                                 <NavLink
-                                    to="/tables"
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('tables') && 'bg-graydark dark:bg-meta-4'
+                                    to="/logout"
+                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('logout') && 'bg-graydark dark:bg-meta-4'
                                         }`}
                                 >
-                                    {svg10}
-                                    Tables
+                                    <FaSignOutAlt />
+                                    Logout
                                 </NavLink>
                             </li>
-
-                            <li>
-                                <NavLink
-                                    to="/settings"
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('settings') &&
-                                        'bg-graydark dark:bg-meta-4'
-                                        }`}
-                                >
-                                    {svg11}
-                                    Settings
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div>
-                        <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
-                            OTHERS
-                        </h3>
-
-                        <ul className="mb-6 flex flex-col gap-1.5">
-                            <li>
-                                <NavLink
-                                    to="/chart"
-                                    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
-                                        }`}
-                                >
-                                    {chartIcon}
-                                    Chart
-                                </NavLink>
-                            </li>
-
-                            <SidebarLinkGroup
-                                activeCondition={pathname === '/ui' || pathname.includes('ui')}
-                            >
-                                {(handleClick, open) => {
-                                    return (
-                                        <React.Fragment>
-                                            <NavLink
-                                                to="#"
-                                                className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/ui' || pathname.includes('ui')) &&
-                                                    'bg-graydark dark:bg-meta-4'
-                                                    }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    sidebarExpanded
-                                                        ? handleClick()
-                                                        : setSidebarExpanded(true);
-                                                }}
-                                            >
-                                                {uiElementIcon}
-                                                UI Elements
-                                                <svg
-                                                    className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                                                        }`}
-                                                    width="20"
-                                                    height="20"
-                                                    viewBox="0 0 20 20"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        clipRule="evenodd"
-                                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                                        fill=""
-                                                    />
-                                                </svg>
-                                            </NavLink>
-                                            <div
-                                                className={`translate transform overflow-hidden ${!open && 'hidden'
-                                                    }`}
-                                            >
-                                                <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
-                                                    <li>
-                                                        <NavLink
-                                                            to="/ui/alerts"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
-                                                        >
-                                                            Alerts
-                                                        </NavLink>
-                                                    </li>
-                                                    <li>
-                                                        <NavLink
-                                                            to="/ui/buttons"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
-                                                        >
-                                                            Buttons
-                                                        </NavLink>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </React.Fragment>
-                                    );
-                                }}
-                            </SidebarLinkGroup>
-
-                            <SidebarLinkGroup
-                                activeCondition={
-                                    pathname === '/auth' || pathname.includes('auth')
-                                }
-                            >
-                                {(handleClick, open) => {
-                                    return (
-                                        <React.Fragment>
-                                            <NavLink
-                                                to="#"
-                                                className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === '/auth' || pathname.includes('auth')) &&
-                                                    'bg-graydark dark:bg-meta-4'
-                                                    }`}
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    sidebarExpanded
-                                                        ? handleClick()
-                                                        : setSidebarExpanded(true);
-                                                }}
-                                            >
-                                                {svg13}
-                                                Authentication
-                                                <svg
-                                                    className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && 'rotate-180'
-                                                        }`}
-                                                    width="20"
-                                                    height="20"
-                                                    viewBox="0 0 20 20"
-                                                    fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        clipRule="evenodd"
-                                                        d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                                                        fill=""
-                                                    />
-                                                </svg>
-                                            </NavLink>
-                                            <div
-                                                className={`translate transform overflow-hidden ${!open && 'hidden'
-                                                    }`}
-                                            >
-                                                <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                                                    <li>
-                                                        <NavLink
-                                                            to="/auth/signin"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
-                                                        >
-                                                            Sign In
-                                                        </NavLink>
-                                                    </li>
-                                                    <li>
-                                                        <NavLink
-                                                            to="/auth/signup"
-                                                            className={({ isActive }) =>
-                                                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                                                (isActive && '!text-white')
-                                                            }
-                                                        >
-                                                            Sign Up
-                                                        </NavLink>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </React.Fragment>
-                                    );
-                                }}
-                            </SidebarLinkGroup>
                         </ul>
                     </div>
                 </nav>
