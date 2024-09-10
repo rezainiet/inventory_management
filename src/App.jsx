@@ -25,6 +25,11 @@ import OrderFulfillment from './components/Tables/Orders/OrderFulfillment';
 import TrackFulfillment from './components/Tables/Orders/TrackFulfillment';
 import SalesReport from './pages/ReportsAndAnalytics/SalesReport';
 import InventoryReport from './pages/ReportsAndAnalytics/InventoryReport';
+import ExportReports from './pages/ReportsAndAnalytics/ExportReports';
+import UserRoles from './pages/Admin/UserRoles';
+import ManageUsers from './pages/Admin/ManageUsers';
+import MainProfile from './pages/Profile/MainProfile';
+import SystemSettings from './pages/Settings/SystemSettings';
 // import SignUp from './pages/Authentication/SignUp'; // Uncomment if SignUp component exists
 
 function App() {
@@ -147,8 +152,53 @@ function App() {
           path="/reports/inventory"
           element={
             <>
-              <PageTitle title="Sales Report | Inventory of Koel Modish Apparels" />
+              <PageTitle title="Inventory Report | Inventory of Koel Modish Apparels" />
               <InventoryReport />
+            </>
+          }
+        />
+        <Route
+          path="/reports/export"
+          element={
+            <>
+              <PageTitle title="Export Reports | Inventory of Koel Modish Apparels" />
+              <ExportReports />
+            </>
+          }
+        />
+        <Route
+          path="/users/roles"
+          element={
+            <>
+              <PageTitle title="User Roles | Inventory of Koel Modish Apparels" />
+              <UserRoles />
+            </>
+          }
+        />
+        <Route
+          path="/users/manage"
+          element={
+            <>
+              <PageTitle title="Manage Users | Inventory of Koel Modish Apparels" />
+              <ManageUsers />
+            </>
+          }
+        />
+        <Route
+          path="/settings/profile"
+          element={
+            <>
+              <PageTitle title="Manage Users | Inventory of Koel Modish Apparels" />
+              <MainProfile />
+            </>
+          }
+        />
+        <Route
+          path="/settings/system"
+          element={
+            <>
+              <PageTitle title="Manage Users | Inventory of Koel Modish Apparels" />
+              <SystemSettings />
             </>
           }
         />

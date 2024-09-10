@@ -1,60 +1,63 @@
 import { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
-// Sample data for users
-const usersData = [
+// Sample data for user roles
+const userRolesData = [
     {
-        userId: 'USR001',
-        name: 'John Doe',
-        email: 'john@example.com',
-        role: 'Admin',
+        roleId: 'ROLE001',
+        roleName: 'Admin',
+        description: 'Full access to all features and settings.',
     },
     {
-        userId: 'USR002',
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        role: 'Manager',
+        roleId: 'ROLE002',
+        roleName: 'Manager',
+        description: 'Access to inventory and sales management.',
     },
     {
-        userId: 'USR003',
-        name: 'Alice Johnson',
-        email: 'alice@example.com',
-        role: 'Staff',
+        roleId: 'ROLE003',
+        roleName: 'Staff',
+        description: 'Limited access to order processing and stock management.',
     },
 ];
 
-const ManageUsers = () => {
-    const [users, setUsers] = useState(usersData);
+const UserRoles = () => {
+    const [roles, setRoles] = useState(userRolesData);
 
-    // Function to handle user editing
-    const handleEditUser = (userId) => {
-        // Placeholder for edit user functionality
-        alert(`Edit user ${userId}`);
+    // Add new role (you can add form and logic for adding roles)
+    const handleAddRole = () => {
+        // Placeholder function for adding roles
+        alert('Add new role functionality');
     };
 
     return (
         <div>
-            <Breadcrumb pageName="Manage Users" />
+            <Breadcrumb pageName="User Roles" />
             <div className="max-w-7xl mx-auto p-8 bg-white rounded-lg shadow-lg dark:bg-boxdark">
                 <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
-                    Manage Users
+                    User Roles
                 </h2>
+
+                <div className="mb-6 flex justify-end gap-4">
+                    <button
+                        onClick={handleAddRole}
+                        className="px-6 py-2 bg-primary text-white rounded-md shadow-md hover:bg-blue-600"
+                    >
+                        Add New Role
+                    </button>
+                </div>
 
                 <div className="overflow-x-auto">
                     <table className="w-full table-auto border-collapse dark:border-strokedark">
                         <thead>
                             <tr className="bg-gray-200 dark:bg-meta-4">
                                 <th className="py-4 px-6 font-medium text-left text-gray-800 dark:text-white">
-                                    User ID
+                                    Role ID
                                 </th>
                                 <th className="py-4 px-6 font-medium text-left text-gray-800 dark:text-white">
-                                    Name
+                                    Role Name
                                 </th>
                                 <th className="py-4 px-6 font-medium text-left text-gray-800 dark:text-white">
-                                    Email
-                                </th>
-                                <th className="py-4 px-6 font-medium text-left text-gray-800 dark:text-white">
-                                    Role
+                                    Description
                                 </th>
                                 <th className="py-4 px-6 font-medium text-center text-gray-800 dark:text-white">
                                     Actions
@@ -62,26 +65,20 @@ const ManageUsers = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.length > 0 ? (
-                                users.map((user, index) => (
+                            {roles.length > 0 ? (
+                                roles.map((role, index) => (
                                     <tr key={index} className="border-b dark:border-strokedark">
                                         <td className="py-4 px-6 text-gray-800 dark:text-white">
-                                            {user.userId}
+                                            {role.roleId}
                                         </td>
                                         <td className="py-4 px-6 text-gray-800 dark:text-white">
-                                            {user.name}
+                                            {role.roleName}
                                         </td>
                                         <td className="py-4 px-6 text-gray-800 dark:text-white">
-                                            {user.email}
-                                        </td>
-                                        <td className="py-4 px-6 text-gray-800 dark:text-white">
-                                            {user.role}
+                                            {role.description}
                                         </td>
                                         <td className="py-4 px-6 text-center">
-                                            <button
-                                                className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                                                onClick={() => handleEditUser(user.userId)}
-                                            >
+                                            <button className="px-4 py-2 text-white bg-yellow-500 rounded-md hover:bg-yellow-600">
                                                 Edit
                                             </button>
                                         </td>
@@ -89,8 +86,8 @@ const ManageUsers = () => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="5" className="py-4 px-6 text-center text-gray-800 dark:text-white">
-                                        No users available.
+                                    <td colSpan="4" className="py-4 px-6 text-center text-gray-800 dark:text-white">
+                                        No roles available.
                                     </td>
                                 </tr>
                             )}
@@ -102,4 +99,4 @@ const ManageUsers = () => {
     );
 };
 
-export default ManageUsers;
+export default UserRoles;

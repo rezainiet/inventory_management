@@ -1,19 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
+import AddProduct from './AddProduct'; // Adjust the import path as necessary
+import EditProduct from './EditProduct'; // Adjust the import path as necessary
+
+// Mock function to fetch products, replace with your API call
+const fetchProducts = async () => {
+    // Example products, replace with actual data fetching logic
+    return [
+        { _id: 'productId1', name: 'Product 1', colors: ['Red'], sizes: ['M'] },
+        { _id: 'productId2', name: 'Product 2', colors: ['Blue'], sizes: ['L'] },
+    ];
+};
 
 const AddEditProduct = () => {
     const [isEditMode, setIsEditMode] = useState(false); // Add/Edit mode toggle
-
-    // Initial state for the form
+    const [products, setProducts] = useState([]); // State to hold products
     const [productData, setProductData] = useState({
+        product: '',
         name: '',
-        sku: '',
-        stock: 0,
-        price: 0.0,
-        category: '',
-        status: 'In Stock',
-        image: null,
+        colors: [],
+        sizes: [],
+        quantity: 0,
+        description: '',
     });
+    const [colorInput, setColorInput] = useState('');
+    const [sizeInput, setSizeInput] = useState('');
+
+    // Fetch products on component mount
+    useEffect(() => {
+        const loadProducts = async () => {
+            const fetchedProducts = await fetchProducts();
+            setProducts(fetchedProducts);
+        };
+        loadProducts();
+    }, []);
 
     // Handles form input changes
     const handleInputChange = (e) => {
@@ -24,14 +44,62 @@ const AddEditProduct = () => {
         });
     };
 
+    // Handle color input changes
+    const handleColorChange = (e) => {
+        setColorInput(e.target.value);
+    };
+
+    // Handle size input changes
+    const handleSizeChange = (e) => {
+        setSizeInput(e.target.value);
+    };
+
+    // Add color to the colors array
+    const addColor = () => {
+        if (colorInput && !productData.colors.includes(colorInput)) {
+            setProductData({
+                ...productData,
+                colors: [...productData.colors, colorInput],
+            });
+            setColorInput('');
+        }
+    };
+
+    // Add size to the sizes array
+    const addSize = () => {
+        if (sizeInput && !productData.sizes.includes(sizeInput)) {
+            setProductData({
+                ...productData,
+                sizes: [...productData.sizes, sizeInput],
+            });
+            setSizeInput('');
+        }
+    };
+
+    // Remove color from the colors array
+    const removeColor = (color) => {
+        setProductData({
+            ...productData,
+            colors: productData.colors.filter(c => c !== color),
+        });
+    };
+
+    // Remove size from the sizes array
+    const removeSize = (size) => {
+        setProductData({
+            ...productData,
+            sizes: productData.sizes.filter(s => s !== size),
+        });
+    };
+
     // Handles form submission
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isEditMode) {
-            // Logic for updating an existing product
+            // Logic for updating an existing product record
             console.log('Product updated:', productData);
         } else {
-            // Logic for adding a new product
+            // Logic for adding a new product record
             console.log('Product added:', productData);
         }
     };
@@ -62,142 +130,37 @@ const AddEditProduct = () => {
                     </button>
                 </div>
 
-                <h2 className="text-2xl font-semibold text-gray-700 dark:text-white">
-                    {isEditMode ? 'Edit Product' : 'Add Product'}
-                </h2>
-
-                <form className="mt-6" onSubmit={handleSubmit}>
-                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        {/* Product Name */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                Product Name
-                            </label>
-                            <input
-                                type="text"
-                                name="name"
-                                value={productData.name}
-                                onChange={handleInputChange}
-                                required
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                placeholder="Enter product name"
-                            />
-                        </div>
-
-                        {/* SKU */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                SKU
-                            </label>
-                            <input
-                                type="text"
-                                name="sku"
-                                value={productData.sku}
-                                onChange={handleInputChange}
-                                required
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                placeholder="Enter SKU"
-                            />
-                        </div>
-
-                        {/* Stock */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                Stock
-                            </label>
-                            <input
-                                type="number"
-                                name="stock"
-                                value={productData.stock}
-                                onChange={handleInputChange}
-                                min="0"
-                                required
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                placeholder="Enter stock quantity"
-                            />
-                        </div>
-
-                        {/* Price */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                Price
-                            </label>
-                            <input
-                                type="number"
-                                name="price"
-                                value={productData.price}
-                                onChange={handleInputChange}
-                                min="0.00"
-                                step="0.01"
-                                required
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                placeholder="Enter product price"
-                            />
-                        </div>
-
-                        {/* Category */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                Category
-                            </label>
-                            <select
-                                name="category"
-                                value={productData.category}
-                                onChange={handleInputChange}
-                                required
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                            >
-                                <option value="">Select Category</option>
-                                <option value="Electronics">Electronics</option>
-                                <option value="Computers">Computers</option>
-                                <option value="Fashion">Fashion</option>
-                                <option value="Home">Home</option>
-                            </select>
-                        </div>
-
-                        {/* Status */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                Status
-                            </label>
-                            <select
-                                name="status"
-                                value={productData.status}
-                                onChange={handleInputChange}
-                                required
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                            >
-                                <option value="In Stock">In Stock</option>
-                                <option value="Low Stock">Low Stock</option>
-                                <option value="Out of Stock">Out of Stock</option>
-                            </select>
-                        </div>
-
-                        {/* Product Image */}
-                        <div className="col-span-2">
-                            <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                Product Image
-                            </label>
-                            <input
-                                type="file"
-                                name="image"
-                                onChange={(e) => setProductData({ ...productData, image: e.target.files[0] })}
-                                accept="image/*"
-                                className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                            />
-                        </div>
-                    </div>
-
-                    {/* Submit Button */}
-                    <div className="mt-6">
-                        <button
-                            type="submit"
-                            className="w-full px-4 py-2 text-white bg-indigo-500 hover:bg-indigo-600 rounded-md focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-600"
-                        >
-                            {isEditMode ? 'Update Product' : 'Add Product'}
-                        </button>
-                    </div>
-                </form>
+                {/* Conditional rendering based on isEditMode */}
+                {isEditMode ? (
+                    <EditProduct
+                        products={products}
+                        productData={productData}
+                        handleInputChange={handleInputChange}
+                        handleSubmit={handleSubmit}
+                        colorInput={colorInput}
+                        sizeInput={sizeInput}
+                        handleColorChange={handleColorChange}
+                        handleSizeChange={handleSizeChange}
+                        addColor={addColor}
+                        addSize={addSize}
+                        removeColor={removeColor}
+                        removeSize={removeSize}
+                    />
+                ) : (
+                    <AddProduct
+                        productData={productData}
+                        handleInputChange={handleInputChange}
+                        handleSubmit={handleSubmit}
+                        colorInput={colorInput}
+                        sizeInput={sizeInput}
+                        handleColorChange={handleColorChange}
+                        handleSizeChange={handleSizeChange}
+                        addColor={addColor}
+                        addSize={addSize}
+                        removeColor={removeColor}
+                        removeSize={removeSize}
+                    />
+                )}
             </div>
         </div>
     );

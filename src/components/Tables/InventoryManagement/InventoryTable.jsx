@@ -1,50 +1,31 @@
-import ProductOne from '../../../images/product/product-01.png';
-import ProductTwo from '../../../images/product/product-02.png';
-import ProductThree from '../../../images/product/product-03.png';
-import ProductFour from '../../../images/product/product-04.png';
-import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
-
-// Example inventory data
-const inventoryData = [
-    {
-        image: ProductOne,
-        name: 'Apple Watch Series 7',
-        sku: 'AW-203',
-        stock: 20,
-        price: 399,
-        category: 'Electronics',
-        status: 'In Stock',
-    },
-    {
-        image: ProductTwo,
-        name: 'Macbook Pro M1',
-        sku: 'MBP-543',
-        stock: 12,
-        price: 1299,
-        category: 'Electronics',
-        status: 'In Stock',
-    },
-    {
-        image: ProductThree,
-        name: 'Dell Inspiron 15',
-        sku: 'DI-786',
-        stock: 5,
-        price: 899,
-        category: 'Computers',
-        status: 'Low Stock',
-    },
-    {
-        image: ProductFour,
-        name: 'HP Probook 450',
-        sku: 'HPB-920',
-        stock: 0,
-        price: 499,
-        category: 'Computers',
-        status: 'Out of Stock',
-    },
-];
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import Breadcrumb from '../../Breadcrumbs/Breadcrumb'; // Adjust path as needed
 
 const InventoryTable = () => {
+    const [inventoryData, setInventoryData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:4000/api/v1/products');
+                setInventoryData(response.data);
+                setLoading(false);
+            } catch (err) {
+                console.error('Error fetching products:', err);
+                setError('Failed to fetch products.');
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>{error}</p>;
+
     return (
         <div>
             <Breadcrumb pageName="Inventory List" />
@@ -80,8 +61,8 @@ const InventoryTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {inventoryData.map((product, key) => (
-                                <tr key={key}>
+                            {inventoryData.map((product) => (
+                                <tr key={product._id}>
                                     <td className="border-b border-[#eee] py-5 px-4 xl:pl-11 dark:border-strokedark">
                                         <div className="flex items-center gap-4">
                                             <img
