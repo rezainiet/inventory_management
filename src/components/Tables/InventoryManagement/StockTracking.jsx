@@ -1,70 +1,74 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
-
-// Sample data for products in stock
-const productStockData = [
-    {
-        id: 1,
-        name: 'Apple Watch Series 7',
-        sku: 'AW-203',
-        stock: 20,
-        threshold: 10, // Low stock threshold
-    },
-    {
-        id: 2,
-        name: 'Macbook Pro M1',
-        sku: 'MBP-543',
-        stock: 5,
-        threshold: 10,
-    },
-    {
-        id: 3,
-        name: 'Dell Inspiron 15',
-        sku: 'DI-786',
-        stock: 2,
-        threshold: 5,
-    },
-    {
-        id: 4,
-        name: 'HP Probook 450',
-        sku: 'HPB-920',
-        stock: 0,
-        threshold: 5,
-    },
-];
+import { getProducts, updateProductStock } from '../../../utils/apiUtils'; // Import API utilities
 
 const StockTracking = () => {
-    const [stockData, setStockData] = useState(productStockData);
+    const [stockData, setStockData] = useState([]); // Store product data from API
     const [adjustmentAmount, setAdjustmentAmount] = useState({}); // Track adjustment amounts
+    const [lowStockProducts, setLowStockProducts] = useState([]); // Track low stock products
+    const [showLowStockProducts, setShowLowStockProducts] = useState(false);
 
-    const handleStockChange = (id, amount) => {
-        setStockData(stockData.map((product) =>
-            product.id === id
+    // Fetch products from the API
+    useEffect(() => {
+        const fetchStockData = async () => {
+            try {
+                const products = await getProducts(); // Fetch products from the API
+                setStockData(products);
+                // Check for low stock products
+                const lowStock = products.filter(product => product.stock < 10 && product.stock > 0);
+                setLowStockProducts(lowStock); // Set low stock products for alert
+            } catch (error) {
+                console.error('Error fetching product stock data:', error);
+            }
+        };
+        fetchStockData();
+    }, []);
+
+    // Handle stock adjustment
+    const handleStockChange = async (id, amount) => {
+        const updatedProducts = stockData.map((product) =>
+            product._id === id
                 ? {
                     ...product,
                     stock: product.stock + amount >= 0 ? product.stock + amount : 0,
                 }
                 : product
-        ));
+        );
+        setStockData(updatedProducts);
+
+        try {
+            // Update the stock in the database via API
+            const updatedProduct = updatedProducts.find((product) => product._id === id);
+            await updateProductStock(id, { stock: updatedProduct.stock });
+        } catch (error) {
+            console.error('Error updating product stock:', error);
+            // Optionally, revert changes if the update fails
+            setStockData(prevStockData => prevStockData); // Revert back to the previous state
+        }
     };
 
+    // Handle adjustment input change
     const handleAmountChange = (id, value) => {
-        setAdjustmentAmount({
-            ...adjustmentAmount,
-            [id]: value,
-        });
+        if (value >= 0) { // Prevent negative values
+            setAdjustmentAmount({
+                ...adjustmentAmount,
+                [id]: value,
+            });
+        }
     };
 
+    // Get stock status based on stock levels
     const getStockStatus = (product) => {
         if (product.stock === 0) {
             return 'Out of Stock';
-        } else if (product.stock <= product.threshold) {
+        } else if (product.stock < 10) {
             return 'Low Stock';
         } else {
             return 'In Stock';
         }
     };
 
+    // Get color based on stock status
     const getStatusColor = (status) => {
         switch (status) {
             case 'In Stock':
@@ -85,6 +89,25 @@ const StockTracking = () => {
                 <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-6">
                     Stock Tracking
                 </h2>
+
+                {lowStockProducts.length > 0 && (
+                    <div className="mb-4 p-4 bg-yellow-100 text-yellow-800 rounded-md dark:bg-yellow-800 dark:text-yellow-200">
+                        <p>
+                            <strong>Low Stock Alert:</strong> The following products are running low on stock: <strong className='cursor-pointer' onClick={() => setShowLowStockProducts(!showLowStockProducts)}>
+                                {showLowStockProducts ? 'Hide' : 'Show'} {lowStockProducts.length} Products
+                            </strong>
+                        </p>
+                        {
+                            showLowStockProducts && <ul className="list-disc list-inside">
+                                {lowStockProducts.map(product => (
+                                    <li key={product._id}>
+                                        {product.name} (Stock: {product.stock})
+                                    </li>
+                                ))}
+                            </ul>
+                        }
+                    </div>
+                )}
 
                 <div className="max-w-full overflow-x-auto">
                     <table className="w-full table-auto">
@@ -109,7 +132,7 @@ const StockTracking = () => {
                         </thead>
                         <tbody>
                             {stockData.map((product) => (
-                                <tr key={product.id} className="border-b dark:border-strokedark">
+                                <tr key={product._id} className="border-b dark:border-strokedark">
                                     <td className="py-4 px-6 text-black dark:text-white">
                                         {product.name}
                                     </td>
@@ -133,8 +156,8 @@ const StockTracking = () => {
                                             {/* Input field for adjustment amount */}
                                             <input
                                                 type="number"
-                                                value={adjustmentAmount[product.id] || ''}
-                                                onChange={(e) => handleAmountChange(product.id, Number(e.target.value))}
+                                                value={adjustmentAmount[product._id] || ''}
+                                                onChange={(e) => handleAmountChange(product._id, Number(e.target.value))}
                                                 min="0"
                                                 className="w-24 px-2 py-1 text-center border border-gray-300 rounded-md dark:border-strokedark"
                                                 placeholder="Amount"
@@ -142,7 +165,7 @@ const StockTracking = () => {
                                             {/* Decrease Stock Button */}
                                             <button
                                                 className="px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md"
-                                                onClick={() => handleStockChange(product.id, -(adjustmentAmount[product.id] || 0))}
+                                                onClick={() => handleStockChange(product._id, -(adjustmentAmount[product._id] || 0))}
                                             >
                                                 -
                                             </button>
@@ -150,7 +173,7 @@ const StockTracking = () => {
                                             {/* Increase Stock Button */}
                                             <button
                                                 className="px-3 py-1 bg-primary hover:bg-blue-600 text-white rounded-md"
-                                                onClick={() => handleStockChange(product.id, adjustmentAmount[product.id] || 0)}
+                                                onClick={() => handleStockChange(product._id, adjustmentAmount[product._id] || 0)}
                                             >
                                                 +
                                             </button>

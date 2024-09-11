@@ -30,6 +30,7 @@ import UserRoles from './pages/Admin/UserRoles';
 import ManageUsers from './pages/Admin/ManageUsers';
 import MainProfile from './pages/Profile/MainProfile';
 import SystemSettings from './pages/Settings/SystemSettings';
+import CreateOrder from './components/Tables/Orders/CreateOrder';
 // import SignUp from './pages/Authentication/SignUp'; // Uncomment if SignUp component exists
 
 function App() {
@@ -109,6 +110,15 @@ function App() {
             <>
               <PageTitle title="Add Supplier | Inventory of Koel Modish Apparels" />
               <AddSupplier />
+            </>
+          }
+        />
+        <Route
+          path="/orders/create"
+          element={
+            <>
+              <PageTitle title="Order List | Inventory of Koel Modish Apparels" />
+              <CreateOrder />
             </>
           }
         />

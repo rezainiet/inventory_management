@@ -48,7 +48,7 @@ const AddSupplier = () => {
     return (
         <div>
             <Breadcrumb pageName="Add Supplier" />
-            <div className="max-w-5xl mx-auto p-6 bg-white rounded-md shadow-md dark:bg-boxdark">
+            <div className="max-w-2xl mx-auto p-6 bg-white rounded-md shadow-md dark:bg-boxdark border border-gray-200">
                 <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-6">
                     Supplier Information
                 </h2>
@@ -133,7 +133,7 @@ const AddSupplier = () => {
                             <div className="flex justify-end mt-4">
                                 <button
                                     type="submit"
-                                    className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md"
+                                    className="px-4 py-2 w-full bg-indigo-500 hover:bg-indigo-600 text-white rounded-md"
                                 >
                                     Add Supplier
                                 </button>

@@ -87,6 +87,14 @@ export async function deleteProduct(productId) {
     });
 }
 
+// Update product stock
+export async function updateProductStock(productId, data) {
+    return apiRequest(`${API_BASE_URL}/products/${productId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
+}
+
 
 // api for suppliers
 
@@ -109,3 +117,23 @@ export async function addSupplier(supplierData) {
         body: JSON.stringify(supplierData),
     });
 }
+
+
+
+// order api 
+
+export const createOrder = async (orderData) => {
+    const response = await fetch(`${API_BASE_URL}/orders/create`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to create order');
+    }
+
+    return response.json();
+};
