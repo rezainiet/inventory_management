@@ -1,6 +1,7 @@
 // apiUtils.js
 
-const API_BASE_URL = 'https://api.example.com'; // Replace with your actual API base URL
+// Updated API base URL for your local development environment
+const API_BASE_URL = 'http://localhost:4000/api/v1';
 
 /**
  * Utility function to handle API requests.
@@ -30,6 +31,9 @@ async function apiRequest(url, options = {}) {
     }
 }
 
+
+
+// API for Products
 /**
  * Get a list of products from the inventory.
  * @returns {Promise<object[]>} - The list of products.
@@ -53,7 +57,7 @@ export async function getProductById(productId) {
  * @returns {Promise<object>} - The added product.
  */
 export async function addProduct(productData) {
-    return apiRequest(`${API_BASE_URL}/products`, {
+    return apiRequest(`${API_BASE_URL}/products/add`, {
         method: 'POST',
         body: JSON.stringify(productData),
     });
@@ -80,5 +84,28 @@ export async function updateProduct(productId, productData) {
 export async function deleteProduct(productId) {
     return apiRequest(`${API_BASE_URL}/products/${productId}`, {
         method: 'DELETE',
+    });
+}
+
+
+// api for suppliers
+
+/**
+ * Get a list of suppliers from the inventory.
+ * @returns {Promise<object[]>} - The list of suppliers.
+ */
+export async function getSuppliers() {
+    return apiRequest(`${API_BASE_URL}/suppliers`);
+}
+
+/**
+ * Add a new supplier to the system.
+ * @param {object} supplierData - The supplier data to be added.
+ * @returns {Promise<object>} - The added supplier.
+ */
+export async function addSupplier(supplierData) {
+    return apiRequest(`${API_BASE_URL}/suppliers/add`, {
+        method: 'POST',
+        body: JSON.stringify(supplierData),
     });
 }

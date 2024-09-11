@@ -182,7 +182,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                             to="/supplier/add"
                                                             className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                                                         >
-                                                            Add/Edit Supplier
+                                                            Add Supplier
                                                         </NavLink>
                                                     </li>
                                                 </ul>

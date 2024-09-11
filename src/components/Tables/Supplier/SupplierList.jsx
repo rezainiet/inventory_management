@@ -1,38 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
-
-// Sample data for suppliers
-const supplierData = [
-    {
-        id: 1,
-        name: 'Tech Supplies Inc.',
-        contact: 'John Doe',
-        email: 'john@techsupplies.com',
-        phone: '123-456-7890',
-        address: '123 Tech Road, Silicon Valley, CA'
-    },
-    {
-        id: 2,
-        name: 'Gadget World LLC',
-        contact: 'Jane Smith',
-        email: 'jane@gadgetworld.com',
-        phone: '234-567-8901',
-        address: '456 Gadget Lane, New York, NY'
-    },
-    {
-        id: 3,
-        name: 'Hardware Hub',
-        contact: 'Alice Johnson',
-        email: 'alice@hardwarehub.com',
-        phone: '345-678-9012',
-        address: '789 Hardware Blvd, Austin, TX'
-    },
-    // Add more supplier data as needed
-];
+import { getSuppliers } from '../../../utils/apiUtils';
 
 const SupplierList = () => {
-    const [suppliers, setSuppliers] = useState(supplierData);
+    const [suppliers, setSuppliers] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    // Fetch suppliers from the API on component mount
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await getSuppliers(); // Fetch suppliers from API
+                setSuppliers(data);
+            } catch (err) {
+                setError('Error fetching suppliers');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value);
@@ -44,6 +34,14 @@ const SupplierList = () => {
         supplier.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         supplier.phone.includes(searchTerm)
     );
+
+    if (loading) {
+        return <p>Loading suppliers...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <div>
@@ -65,9 +63,9 @@ const SupplierList = () => {
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                     {filteredSuppliers.map((supplier) => (
-                        <div key={supplier.id} className="bg-white dark:bg-boxdark border border-gray-200 rounded-lg shadow-md p-4">
+                        <div key={supplier._id} className="bg-white dark:bg-boxdark border border-gray-200 rounded-lg shadow-md p-4">
                             <h3 className="text-lg font-semibold text-gray-800 dark:text-white">{supplier.name}</h3>
-                            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Contact: {supplier.contact}</p>
+                            <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">Contact: {supplier.contactPerson}</p>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Email: {supplier.email}</p>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Phone: {supplier.phone}</p>
                             <p className="text-sm text-gray-600 dark:text-gray-400">Address: {supplier.address}</p>

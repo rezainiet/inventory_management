@@ -1,21 +1,21 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import Breadcrumb from '../../Breadcrumbs/Breadcrumb'; // Adjust path as needed
+import React, { useEffect, useState } from 'react';
+import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
+import { getProducts } from '../../../utils/apiUtils';
 
 const InventoryTable = () => {
-    const [inventoryData, setInventoryData] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:4000/api/v1/products');
-                setInventoryData(response.data);
-                setLoading(false);
-            } catch (err) {
-                console.error('Error fetching products:', err);
-                setError('Failed to fetch products.');
+                const data = await getProducts();
+                setProducts(data);
+            } catch (error) {
+                setError('Failed to fetch products');
+                console.error(error);
+            } finally {
                 setLoading(false);
             }
         };
@@ -23,8 +23,13 @@ const InventoryTable = () => {
         fetchProducts();
     }, []);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <div>
@@ -61,7 +66,7 @@ const InventoryTable = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {inventoryData.map((product) => (
+                            {products.map((product) => (
                                 <tr key={product._id}>
                                     <td className="border-b border-[#eee] py-5 px-4 xl:pl-11 dark:border-strokedark">
                                         <div className="flex items-center gap-4">

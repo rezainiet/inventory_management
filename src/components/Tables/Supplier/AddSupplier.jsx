@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
+import { addSupplier } from '../../../utils/apiUtils';
 
 const AddSupplier = () => {
     const [supplier, setSupplier] = useState({
         name: '',
-        contact: '',
+        contactPerson: '',
         email: '',
         phone: '',
         address: ''
     });
 
+    const [errorMessage, setErrorMessage] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+
+    // Handle input change
     const handleChange = (e) => {
         const { name, value } = e.target;
         setSupplier({
@@ -18,17 +23,26 @@ const AddSupplier = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    // Handle form submission
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Implement form submission logic here (e.g., send data to an API or update state)
-        alert('Supplier added successfully');
-        setSupplier({
-            name: '',
-            contact: '',
-            email: '',
-            phone: '',
-            address: ''
-        });
+
+        try {
+            // Call the addSupplier API function
+            await addSupplier(supplier);
+            setSuccessMessage('Supplier added successfully!');
+            setErrorMessage(''); // Clear any previous error message
+            setSupplier({
+                name: '',
+                contactPerson: '',
+                email: '',
+                phone: '',
+                address: ''
+            });
+        } catch (error) {
+            setErrorMessage(error.message || 'Failed to add supplier');
+            setSuccessMessage('');
+        }
     };
 
     return (
@@ -39,14 +53,16 @@ const AddSupplier = () => {
                     Supplier Information
                 </h2>
 
+                {/* Display success or error messages */}
+                {successMessage && <p className="text-green-500">{successMessage}</p>}
+                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-
                         <div className="flex flex-col gap-5.5 p-6.5">
+                            {/* Supplier Name */}
                             <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Supplier Name
-                                </label>
+                                <label className="mb-3 block text-black dark:text-white">Supplier Name</label>
                                 <input
                                     type="text"
                                     name="name"
@@ -58,14 +74,13 @@ const AddSupplier = () => {
                                 />
                             </div>
 
+                            {/* Contact Person */}
                             <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Contact Person
-                                </label>
+                                <label className="mb-3 block text-black dark:text-white">Contact Person</label>
                                 <input
                                     type="text"
-                                    name="contact"
-                                    value={supplier.contact}
+                                    name="contactPerson"
+                                    value={supplier.contactPerson}
                                     onChange={handleChange}
                                     placeholder="Contact Person"
                                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white"
@@ -73,10 +88,9 @@ const AddSupplier = () => {
                                 />
                             </div>
 
+                            {/* Email */}
                             <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Email Address
-                                </label>
+                                <label className="mb-3 block text-black dark:text-white">Email Address</label>
                                 <input
                                     type="email"
                                     name="email"
@@ -88,10 +102,9 @@ const AddSupplier = () => {
                                 />
                             </div>
 
+                            {/* Phone */}
                             <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Phone Number
-                                </label>
+                                <label className="mb-3 block text-black dark:text-white">Phone Number</label>
                                 <input
                                     type="text"
                                     name="phone"
@@ -103,10 +116,9 @@ const AddSupplier = () => {
                                 />
                             </div>
 
+                            {/* Address */}
                             <div>
-                                <label className="mb-3 block text-black dark:text-white">
-                                    Address
-                                </label>
+                                <label className="mb-3 block text-black dark:text-white">Address</label>
                                 <textarea
                                     name="address"
                                     value={supplier.address}
