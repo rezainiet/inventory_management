@@ -231,14 +231,14 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                                                             Order List
                                                         </NavLink>
                                                     </li>
-                                                    <li>
+                                                    {/* <li>
                                                         <NavLink
                                                             to="/orders/fulfillment"
                                                             className="group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white"
                                                         >
                                                             Order Fulfillment
                                                         </NavLink>
-                                                    </li>
+                                                    </li> */}
                                                     <li>
                                                         <NavLink
                                                             to="/orders/tracking"

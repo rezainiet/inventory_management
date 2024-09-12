@@ -112,7 +112,6 @@ const CreateOrder = () => {
 
     return (
         <div className="max-w-5xl mx-auto p-6 bg-white rounded-md shadow-md dark:bg-boxdark">
-            <Breadcrumb pageName="Create Order" />
             <h2 className="text-2xl font-semibold text-gray-700 dark:text-white mb-6">Create Order</h2>
 
             {/* Product Search */}
