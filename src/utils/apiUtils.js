@@ -137,3 +137,54 @@ export const createOrder = async (orderData) => {
 
     return response.json();
 };
+
+// Get Orders API
+
+export const getOrders = async ({ search = '', page = 1, limit = 10, startDate = '', endDate = '' }) => {
+    try {
+        const queryParams = new URLSearchParams({ search, page, limit, startDate, endDate });
+        const response = await fetch(`${API_BASE_URL}/orders?${queryParams}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch orders');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw error;
+    }
+};
+
+
+// Function to delete an order
+export const deleteOrder = async (orderId) => {
+    const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete order');
+    }
+
+    return response.json(); // or just return if no response body is needed
+};
+
+
+// Update order status
+export const updateOrderStatus = async (orderId, status) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/orders/status/${orderId}`, {
+            method: 'PATCH', // Use PATCH if that's what your backend expects
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(status), // Ensure status is directly passed
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update order status');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error updating order status:', error);
+        throw error;
+    }
+};
