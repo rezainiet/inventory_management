@@ -154,6 +154,20 @@ export const getOrders = async ({ search = '', page = 1, limit = 10, startDate =
     }
 };
 
+export const getAllOrders = async ({ search = '', page = 1, limit = 10, startDate = '', endDate = '' }) => {
+    try {
+        const queryParams = new URLSearchParams({ search, page, limit, startDate, endDate });
+        const response = await fetch(`${API_BASE_URL}/orders/getAllOrders?${queryParams}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch orders');
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw error;
+    }
+};
+
 
 // Function to delete an order
 export const deleteOrder = async (orderId) => {
