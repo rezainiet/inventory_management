@@ -22,8 +22,10 @@ import ManageUsers from './pages/Admin/ManageUsers';
 import MainProfile from './pages/Profile/MainProfile';
 import SystemSettings from './pages/Settings/SystemSettings';
 import PrivateRoute from './hooks/PrivateRoute';
+import useUser from './hooks/useUser';
 
 function App() {
+  const { user } = useUser();
   const [loading, setLoading] = useState(true);
   const { pathname } = useLocation();
 
@@ -39,7 +41,7 @@ function App() {
     <Loader />
   ) : (
     <Routes>
-      {/* Authentication Routes */}
+      {/* Authentication Route */}
       <Route
         path="/auth/signin"
         element={
@@ -61,195 +63,162 @@ function App() {
                 <Route
                   path="/dashboard"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Inventory Dashboard | Inventory of Koel Modish Apparels" />
-                        <Dashboard />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Inventory Dashboard | Inventory of Koel Modish Apparels" />
+                      <Dashboard />
+                    </>
                   }
                 />
                 {/* Inventory Management */}
                 <Route
                   path="/inventory/list"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager', 'staff']}>
-                      <>
-                        <PageTitle title="Inventory List | Inventory of Koel Modish Apparels" />
-                        <InventoryTable />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Inventory List | Inventory of Koel Modish Apparels" />
+                      <InventoryTable />
+                    </>
                   }
                 />
                 <Route
                   path="/inventory/add"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Add Product | Inventory of Koel Modish Apparels" />
-                        <AddEditProduct />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Add Product | Inventory of Koel Modish Apparels" />
+                      <AddEditProduct />
+                    </>
                   }
                 />
                 <Route
                   path="/inventory/stock-tracking"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Stock Tracking | Inventory of Koel Modish Apparels" />
-                        <StockTracking />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Stock Tracking | Inventory of Koel Modish Apparels" />
+                      <StockTracking />
+                    </>
                   }
                 />
                 {/* Supplier Management */}
                 <Route
                   path="/suppliers/list"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager', 'staff']}>
-                      <>
-                        <PageTitle title="Supplier List | Inventory of Koel Modish Apparels" />
-                        <SupplierList />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Supplier List | Inventory of Koel Modish Apparels" />
+                      <SupplierList />
+                    </>
                   }
                 />
                 <Route
                   path="/suppliers/add"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Add Supplier | Inventory of Koel Modish Apparels" />
-                        <AddSupplier />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Add Supplier | Inventory of Koel Modish Apparels" />
+                      <AddSupplier />
+                    </>
                   }
                 />
                 {/* Orders */}
                 <Route
                   path="/orders/list"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager', 'staff']}>
-                      <>
-                        <PageTitle title="Order List | Inventory of Koel Modish Apparels" />
-                        <OrderList />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Order List | Inventory of Koel Modish Apparels" />
+                      <OrderList />
+                    </>
                   }
                 />
                 <Route
                   path="/orders/fulfillment"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Order Fulfillment | Inventory of Koel Modish Apparels" />
-                        <OrderFulfillment />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Order Fulfillment | Inventory of Koel Modish Apparels" />
+                      <OrderFulfillment />
+                    </>
                   }
                 />
                 <Route
                   path="/orders/track-fulfillment"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager', 'staff']}>
-                      <>
-                        <PageTitle title="Track Fulfillment | Inventory of Koel Modish Apparels" />
-                        <TrackFulfillment />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Track Fulfillment | Inventory of Koel Modish Apparels" />
+                      <TrackFulfillment />
+                    </>
                   }
                 />
                 <Route
                   path="/orders/create"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Create Order | Inventory of Koel Modish Apparels" />
-                        <CreateOrder />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Create Order | Inventory of Koel Modish Apparels" />
+                      <CreateOrder />
+                    </>
                   }
                 />
                 {/* Reports */}
                 <Route
                   path="/reports/sales"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Sales Report | Inventory of Koel Modish Apparels" />
-                        <SalesReport />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Sales Report | Inventory of Koel Modish Apparels" />
+                      <SalesReport />
+                    </>
                   }
                 />
                 <Route
                   path="/reports/inventory"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Inventory Report | Inventory of Koel Modish Apparels" />
-                        <InventoryReport />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Inventory Report | Inventory of Koel Modish Apparels" />
+                      <InventoryReport />
+                    </>
                   }
                 />
                 <Route
                   path="/reports/export"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager']}>
-                      <>
-                        <PageTitle title="Export Reports | Inventory of Koel Modish Apparels" />
-                        <ExportReports />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Export Reports | Inventory of Koel Modish Apparels" />
+                      <ExportReports />
+                    </>
                   }
                 />
                 {/* Admin Management */}
                 <Route
                   path="/admin/user-roles"
                   element={
-                    <PrivateRoute allowedRoles={['admin']}>
-                      <>
-                        <PageTitle title="User Roles | Inventory of Koel Modish Apparels" />
-                        <UserRoles />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="User Roles | Inventory of Koel Modish Apparels" />
+                      <UserRoles />
+                    </>
                   }
                 />
                 <Route
                   path="/admin/manage-users"
                   element={
-                    <PrivateRoute allowedRoles={['admin']}>
-                      <>
-                        <PageTitle title="Manage Users | Inventory of Koel Modish Apparels" />
-                        <ManageUsers />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Manage Users | Inventory of Koel Modish Apparels" />
+                      <ManageUsers />
+                    </>
                   }
                 />
                 {/* Profile */}
                 <Route
                   path="/profile/main"
                   element={
-                    <PrivateRoute allowedRoles={['admin', 'manager', 'staff']}>
-                      <>
-                        <PageTitle title="Profile | Inventory of Koel Modish Apparels" />
-                        <MainProfile />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="Profile | Inventory of Koel Modish Apparels" />
+                      <MainProfile />
+                    </>
                   }
                 />
                 {/* Settings */}
                 <Route
+                  // allowed={user?.role === 'admin'}
                   path="/settings/system"
                   element={
-                    <PrivateRoute allowedRoles={['admin']}>
-                      <>
-                        <PageTitle title="System Settings | Inventory of Koel Modish Apparels" />
-                        <SystemSettings />
-                      </>
-                    </PrivateRoute>
+                    <>
+                      <PageTitle title="System Settings | Inventory of Koel Modish Apparels" />
+                      <SystemSettings />
+                    </>
                   }
                 />
               </Routes>

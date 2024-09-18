@@ -144,139 +144,95 @@ const SignIn = () => {
 
   if (error) {
     return (
-      <div>
+      <div className="text-center text-red-500">
         <p>Error: {error.message}</p>
       </div>
     );
   }
   if (loading) {
-    return <p>Loading...</p>;
+    return <div className="text-center"><FaSpinner className="animate-spin text-primary mx-auto" /></div>;
   }
   if (user) {
     navigate('/');
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email && password) {
+      signInWithEmailAndPassword(email, password);
+    } else {
+      setIsError("Please fill in all fields");
+    }
+  };
+
   return (
     <>
-      <Breadcrumb pageName="Sign In" />
-
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="flex flex-wrap items-center">
-          <div className="hidden w-full xl:block xl:w-1/2">
-            <div className="py-17.5 px-26 text-center">
-              <Link className="mb-5.5 inline-block" to="/">
-                <img className="hidden dark:block" src={Logo} alt="Logo" />
-                <img className="dark:hidden" src={LogoDark} alt="Logo" />
-              </Link>
-              <span className="mt-15 inline-block">
-                {loginCover}
-              </span>
+      <div className='h-screen flex items-center justify-center'>
+        <div className="rounded-lg border border-stroke bg-white shadow-md dark:border-strokedark dark:bg-boxdark max-w-4xl mx-auto">
+          <div className="flex flex-wrap items-center">
+            {/* Left Side - Logo and Visual */}
+            <div className="hidden w-full xl:block xl:w-1/2 bg-gray-50 dark:bg-gray-800">
+              <div className="py-20 px-10 text-center">
+                <Link className="mb-5 inline-block" to="/">
+                  <img className="hidden dark:block w-32 mx-auto" src={Logo} alt="Logo" />
+                  <img className="dark:hidden w-32 mx-auto" src={LogoDark} alt="Logo" />
+                </Link>
+                <div className="mt-10">
+                  {loginCover}
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-            <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-              <span className="mb-1.5 block font-medium">Sign in to continue</span>
-              <h2 className="mb-9 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Inventory management system.
+            {/* Right Side - Form */}
+            <div className="w-full xl:w-1/2 p-8">
+              <h2 className="text-3xl font-bold mb-4 text-black dark:text-white">
+                Welcome Back
               </h2>
+              <p className="mb-6 text-gray-500 dark:text-gray-400">Sign in to your account</p>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                  <label className="block text-sm font-medium text-black dark:text-white">
                     Email
                   </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                    <span className="absolute right-4 top-4">
-                      <svg
-                        className="fill-current"
-                        width="22"
-                        height="22"
-                        viewBox="0 0 22 22"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.5">
-                          <path
-                            d="M19.2516 3.30005H2.75156C1.58281 3.30005 0.585938 4.26255 0.585938 5.46567V16.6032C0.585938 17.7719 1.54844 18.7688 2.75156 18.7688H19.2516C20.4203 18.7688 21.4172 17.8063 21.4172 16.6032V5.4313C21.4172 4.26255 20.4203 3.30005 19.2516 3.30005ZM19.2516 4.84692C19.2859 4.84692 19.3203 4.84692 19.3547 4.84692L11.0016 10.2094L2.64844 4.84692C2.68281 4.84692 2.71719 4.84692 2.75156 4.84692H19.2516ZM19.2516 17.1532H2.75156C2.40781 17.1532 2.13281 16.8782 2.13281 16.5344V6.35942L10.1766 11.5157C10.4172 11.6875 10.6922 11.7563 10.9672 11.7563C11.2422 11.7563 11.5172 11.6875 11.7578 11.5157L19.8016 6.35942V16.5688C19.8703 16.9125 19.5953 17.1532 19.2516 17.1532Z"
-                            fill="currentColor"
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className="mt-2 w-full p-4 border rounded-lg bg-gray-100 dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:border-primary"
+                  />
                 </div>
 
-                <div className="mb-6">
-                  <label className="mb-2.5 block font-medium text-black dark:text-white">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-black dark:text-white">
                     Password
                   </label>
-                  <div className="relative">
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Enter your password"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-black outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                    />
-                    <span className="absolute right-4 top-4">
-                      <svg
-                        className="fill-current"
-                        width="22"
-                        height="22"
-                        viewBox="0 0 22 22"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <g opacity="0.5">
-                          <path
-                            d="M16.1547 6.80626V5.20439C16.1547 2.76252 14.1453 0.753174 11.7034 0.753174C9.26156 0.753174 7.25219 2.76252 7.25219 5.20439V6.80626C5.98594 7.50217 5.14687 8.83126 5.14687 10.3688V15.9294C5.14687 18.5794 7.21437 20.6469 9.86437 20.6469H13.5422C16.1922 20.6469 18.2597 18.5794 18.2597 15.9294V10.3688C18.2597 8.83126 17.4206 7.50217 16.1547 6.80626ZM8.79844 5.20439C8.79844 3.68752 10.1866 2.29939 11.7034 2.29939C13.2203 2.29939 14.6084 3.68752 14.6084 5.20439V6.67543H8.79844V5.20439ZM16.7034 15.9294C16.7034 17.5438 15.4434 18.8038 13.8291 18.8038H9.86437C8.25 18.8038 6.98937 17.5438 6.98937 15.9294V10.3688C6.98937 8.75439 8.25 7.49439 9.86437 7.49439H13.8291C15.4434 7.49439 16.7034 8.75439 16.7034 10.3688V15.9294Z"
-                            fill="currentColor"
-                          />
-                        </g>
-                      </svg>
-                    </span>
-                  </div>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                    className="mt-2 w-full p-4 border rounded-lg bg-gray-100 dark:bg-gray-700 text-black dark:text-white focus:outline-none focus:border-primary"
+                  />
                 </div>
 
-                {/* Display error message */}
                 {isError && <p className="text-red-500 text-sm mb-3">{isError}</p>}
 
-                {/* Sign in button with loading state */}
-                <div className="mb-5">
+                <div className="mb-6">
                   <button
-                    onClick={() => signInWithEmailAndPassword(email, password)}
                     type="submit"
                     disabled={loading}
-                    className="w-full rounded-lg bg-primary p-4 font-medium text-gray"
+                    className="w-full py-3 bg-primary text-white rounded-lg font-semibold hover:bg-primary-dark transition-all disabled:opacity-50"
                   >
-                    {loading ? (
-                      <FaSpinner className="animate-spin inline-block mr-2" />
-                    ) : (
-                      'Sign In'
-                    )}
+                    {loading ? <FaSpinner className="animate-spin inline-block mr-2" /> : 'Sign In'}
                   </button>
                 </div>
               </form>
 
-              <div className="flex items-center justify-center space-x-2.5">
-                <p className="text-sm">
-                  Don’t have any account?
-                  <Link to="/auth/signup" className="text-sm font-medium text-primary">
-                    Sign Up
-                  </Link>
-                </p>
-              </div>
-
-              <div className="text-center mt-5">
-                <Link to="/" className="text-primary">Back to home</Link>
+              <div className="flex justify-between text-sm">
+                <Link to="/auth/signup" className="text-primary hover:underline">Sign Up</Link>
+                <Link to="/" className="text-primary hover:underline">Back to home</Link>
               </div>
             </div>
           </div>
