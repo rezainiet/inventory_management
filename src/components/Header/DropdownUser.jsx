@@ -2,10 +2,23 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import UserOne from '../../images/user/user-01.png';
 import ClickOutside from '../../ClickOutside';
+import { signOut } from "firebase/auth";
+import { auth } from '../../firebaseinit';
+import useUser from '../../hooks/useUser';
 
-const DropdownUser = () => {
+const DropdownUser = ({ user }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const {
+        userData,
+        loading,
+        error,
+        fetching } = useUser();
 
+
+    console.log(userData)
+    const handleLogOut = () => {
+        signOut(auth);
+    }
     return (
         <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
             <Link
@@ -15,9 +28,9 @@ const DropdownUser = () => {
             >
                 <span className="hidden text-right lg:block">
                     <span className="block text-sm font-medium text-black dark:text-white">
-                        Admin
+                        {userData?.name}
                     </span>
-                    <span className="block text-xs">System Admin</span>
+                    <span className="block text-xs">{user?.email}</span>
                 </span>
 
                 <span className="h-12 w-12 rounded-full">
@@ -119,7 +132,7 @@ const DropdownUser = () => {
                             </Link>
                         </li>
                     </ul>
-                    <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+                    <button onClick={() => handleLogOut()} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
                         <svg
                             className="fill-current"
                             width="22"

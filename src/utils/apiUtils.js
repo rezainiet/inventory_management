@@ -202,3 +202,39 @@ export const updateOrderStatus = async (orderId, status) => {
         throw error;
     }
 };
+
+
+// API for Users
+/**
+ * Get user data by Google ID.
+ * @param {string} googleId - The Google ID of the user.
+ * @returns {Promise<object>} - The user data.
+ */
+export async function getUser(googleId) {
+    return apiRequest(`${API_BASE_URL}/users/${googleId}`);
+}
+
+/**
+ * Create a new user.
+ * @param {object} userData - The user data to be added.
+ * @returns {Promise<object>} - The added user.
+ */
+export async function createUser(userData) {
+    return apiRequest(`${API_BASE_URL}/users`, {
+        method: 'POST',
+        body: JSON.stringify(userData),
+    });
+}
+
+/**
+ * Update an existing user by Google ID.
+ * @param {string} googleId - The Google ID of the user.
+ * @param {object} userData - The updated user data.
+ * @returns {Promise<object>} - The updated user data.
+ */
+export async function updateUser(googleId, userData) {
+    return apiRequest(`${API_BASE_URL}/users/${googleId}`, {
+        method: 'PUT',
+        body: JSON.stringify(userData),
+    });
+}

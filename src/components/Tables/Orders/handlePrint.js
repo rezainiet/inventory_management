@@ -24,9 +24,9 @@ export const handlePrintInvoice = (order) => {
                     max-width: 800px;
                     margin: auto;
                     padding: 20px;
-                    border: 1px solid #ddd;
+                    // border: 1px solid #ddd;
                     border-radius: 8px;
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                     font-size: 14px;
                     line-height: 1.1;
                     color: #555;
@@ -120,18 +120,13 @@ export const handlePrintInvoice = (order) => {
             <div class="invoice-box">
                 <div class="invoice-header">
                     <div>
-                        <h1>Invoice</h1>
-                        <h3 class="invoice_subheading"># Client Copy</h3>
-                        <h2>Order Number: ${order.orderNumber}</h2>
-                        <p>Order Date: ${new Date(order.orderDate).toLocaleDateString()}</p>
-                    </div>
-                    <div class="company-info">
-                        <img src="data:image/png;base64,${logoBase64}" alt="Koel Shop">
-                        <p><strong>Koel Shop</strong></p>
-                        <p>House #31, Road #17, Sector #13</p>
-                        <p>Uttara, Dhaka</p>
-                        <p>Email: sales@koelgroupbd.com</p>
-                    </div>
+                            <h1>Invoice</h1>
+                            <h3 class="invoice_subheading"># Client Copy</h3>
+                        </div>
+                        <div>
+                            <h2>Order Number: ${order.orderNumber}</h2>
+                            <p>Order Date: ${new Date(order.orderDate).toLocaleDateString()}</p>
+                        </div>
                 </div>
                 <div class="billing-info">
                     <div class="bill-to">
@@ -200,21 +195,18 @@ export const handlePrintInvoice = (order) => {
                     <span class="email_span">sales@koelgroupbd.com</span>.
                 </p>
             </div>
+            <hr style="border: 1px dashed black;" />
             <div class="invoice-box">
                 <div class="invoice-header">
-                    <div>
+                <div>
                         <h1>Invoice</h1>
                         <h3 class="invoice_subheading"># Office Copy</h3>
+                </div>
+                    <div>
                         <h2>Order Number: ${order.orderNumber}</h2>
                         <p>Order Date: ${new Date(order.orderDate).toLocaleDateString()}</p>
                     </div>
-                    <div class="company-info">
-                        <img src="data:image/png;base64,${logoBase64}" alt="Koel Shop">
-                        <p><strong>Koel Shop</strong></p>
-                        <p>House #31, Road #17, Sector #13</p>
-                        <p>Uttara, Dhaka</p>
-                        <p>Email: sales@koelgroupbd.com</p>
-                    </div>
+                    
                 </div>
                 <div class="billing-info">
                     <div class="bill-to">
@@ -277,11 +269,6 @@ export const handlePrintInvoice = (order) => {
                         </tr>
                     </tbody>
                 </table>
-                <p class="footer">
-                    Thank you for your order! For any questions or concerns regarding this invoice, please contact us at 
-                    <span class="email_span">+8801791000000</span> or 
-                    <span class="email_span">sales@koelgroupbd.com</span>.
-                </p>
             </div>
         </body>
         </html>

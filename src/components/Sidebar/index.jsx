@@ -3,6 +3,8 @@ import { NavLink, useLocation } from 'react-router-dom';
 import SidebarLinkGroup from './SidebarLinkGroup';
 import Logo from '../../images/logo/inventory_logo.png';
 import { FaChartBar, FaCogs, FaBox, FaTruck, FaClipboardList, FaUsers, FaSignOutAlt, FaWarehouse, FaChartPie, FaFileExport } from 'react-icons/fa'; // Using icons from react-icons
+import { auth } from '../../firebaseinit';
+import { signOut } from 'firebase/auth';
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const location = useLocation();
@@ -402,7 +404,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
                             <li>
                                 <NavLink
-                                    to="/logout"
+                                    onClick={() => signOut(auth)}
                                     className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${pathname.includes('logout') && 'bg-graydark dark:bg-meta-4'
                                         }`}
                                 >
