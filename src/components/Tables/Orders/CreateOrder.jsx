@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import Breadcrumb from '../../Breadcrumbs/Breadcrumb';
-import { createOrder, getProducts } from '../../../utils/apiUtils';
+import { createOrder, getProducts, createSteadfastOrder } from '../../../utils/apiUtils';
+
+const baseURL = 'https://portal.packzy.com/api/v1/create_order'
 
 const CreateOrder = () => {
     const [products, setProducts] = useState([]);
@@ -79,8 +81,27 @@ const CreateOrder = () => {
             fulfillmentStatus: 'Pending',
         };
 
+        // Create SteadFast specific data
+        const steadfastData = {
+            invoice: orderData.orderNumber,
+            recipient_name: customerInfo.name,
+            recipient_phone: customerInfo.phone,
+            recipient_address: customerInfo.address,
+            cod_amount: finalAmount, // Assuming COD amount is the final amount
+            note: notes,
+        };
+
         try {
-            await createOrder(orderData);
+            // Create the order
+            const successOrder = await createOrder(orderData);
+            console.log(successOrder);
+
+            if (paymentMethod === 'SteadFast') {
+                // Call createSteadfastOrder API with SteadFast-specific data
+                const apiResponse = await createSteadfastOrder(steadfastData);
+                console.log(apiResponse)
+            }
+
             alert('Order successfully created!');
 
             // Reset form after successful submission
@@ -196,45 +217,43 @@ const CreateOrder = () => {
                                 placeholder="Tax"
                                 value={tax}
                                 onChange={(e) => setTax(parseFloat(e.target.value) || 0)}
-                                className="w-1/2 px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white ml-2"
+                                className="w-1/2 px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
                             />
                         </div>
-
                     </div>
-                    <div className="text-right text-lg font-medium text-gray-700 dark:text-white mt-4">
+                    <div className="text-right text-lg font-medium text-gray-700 dark:text-white">
                         Final Amount: ${finalAmount.toFixed(2)}
                     </div>
                 </div>
             )}
 
-            {/* Customer Information */}
+            {/* Customer Info */}
             <div className="mb-6">
                 <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-4">Customer Information</h3>
                 <div className="space-y-4">
                     <input
                         type="text"
-                        placeholder="Customer Name"
+                        placeholder="Name"
                         value={customerInfo.name}
                         onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
                         className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
                     />
                     <input
-                        type="text"
-                        placeholder="Customer Phone"
+                        type="tel"
+                        placeholder="Phone"
                         value={customerInfo.phone}
                         onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
                         className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
                     />
                     <input
-                        type="text"
-                        placeholder="Customer Email"
+                        type="email"
+                        placeholder="Email"
                         value={customerInfo.email}
                         onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
                         className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
                     />
-                    <input
-                        type="text"
-                        placeholder="Shipping Address"
+                    <textarea
+                        placeholder="Address"
                         value={customerInfo.address}
                         onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
                         className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
@@ -242,7 +261,7 @@ const CreateOrder = () => {
                 </div>
             </div>
 
-            {/* Payment Method */}
+            {/* Payment Method and Notes */}
             <div className="mb-6">
                 <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-4">Payment Method</h3>
                 <select
@@ -250,28 +269,26 @@ const CreateOrder = () => {
                     onChange={(e) => setPaymentMethod(e.target.value)}
                     className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
                 >
-                    <option value="">Select Payment Method</option>
-                    <option value="Cash">Cash</option>
-                    <option value="Bank Transfer">Bank Transfer</option>
-                    <option value="Cash on Delivery">Cash on Delivery</option>
+                    <option value="">Select payment method</option>
+                    <option value="CreditCard">Credit Card</option>
+                    <option value="SteadFast">SteadFast</option>
+                    {/* Add more payment options if needed */}
                 </select>
-            </div>
 
-            {/* Order Notes */}
-            <div className="mb-6">
-                <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-4">Order Notes</h3>
+                <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-4 mt-4">Notes</h3>
                 <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Order notes or special instructions"
                     className="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md dark:border-strokedark dark:bg-boxdark dark:text-white"
-                    placeholder="Any additional notes for this order?"
                 />
             </div>
 
-            <div className="mt-6">
+            {/* Submit Button */}
+            <div className="flex justify-end">
                 <button
                     onClick={handleSubmitOrder}
-                    className="w-full px-4 py-2 text-white bg-indigo-500 hover:bg-indigo-600 rounded-md focus:outline-none focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-600"
+                    className="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md"
                 >
                     Submit Order
                 </button>

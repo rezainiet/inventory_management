@@ -24,6 +24,7 @@ import SystemSettings from './pages/Settings/SystemSettings';
 import PrivateRoute from './hooks/PrivateRoute';
 import useUser from './hooks/useUser';
 import NotAuthorized from './pages/NotAuthorized/NotAuthorized';
+import CheckBalance from './pages/CheckBalance';
 
 function App() {
   const { user } = useUser();
@@ -237,6 +238,15 @@ function App() {
                     <PrivateRoute allowed={"admin"}>
                       <PageTitle title="System Settings | Inventory of Koel Modish Apparels" />
                       <SystemSettings />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/settings/check-balance"
+                  element={
+                    <PrivateRoute>
+                      <PageTitle title="Check Balance | Inventory of Koel Modish Apparels" />
+                      <CheckBalance />
                     </PrivateRoute>
                   }
                 />

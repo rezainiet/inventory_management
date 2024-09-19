@@ -1,8 +1,11 @@
 // apiUtils.js
 
+import axios from "axios";
+
 // Updated API base URL for your local development environment
 const API_BASE_URL = 'http://localhost:4000/api/v1';
-
+const SECRET_KEY = '78enjakzlyfqva8w5plsoo3h'
+const API_KEY = 'xy5p4dgkucgaybm3qmtygyujkcbg1o2u'
 /**
  * Utility function to handle API requests.
  * @param {string} url - The URL endpoint to fetch.
@@ -238,3 +241,17 @@ export async function updateUser(googleId, userData) {
         body: JSON.stringify(userData),
     });
 }
+
+
+// SteadFast
+
+export const createSteadfastOrder = async (orderData) => {
+    const response = await axios.post('https://portal.packzy.com/api/v1/create_order', orderData, {
+        headers: {
+            'Api-Key': API_KEY,
+            'Secret-Key': SECRET_KEY,
+            'Content-Type': 'application/json',
+        },
+    });
+    return response.data;
+};
