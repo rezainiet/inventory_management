@@ -130,6 +130,8 @@ const AddEditProduct = () => {
                     </button>
                 </div>
 
+                <hr style={{ border: '1px dashed green' }} />
+
                 {/* Conditional rendering based on isEditMode */}
                 {isEditMode ? (
                     <EditProduct

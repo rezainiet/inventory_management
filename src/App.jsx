@@ -23,6 +23,7 @@ import MainProfile from './pages/Profile/MainProfile';
 import SystemSettings from './pages/Settings/SystemSettings';
 import PrivateRoute from './hooks/PrivateRoute';
 import useUser from './hooks/useUser';
+import NotAuthorized from './pages/NotAuthorized/NotAuthorized';
 
 function App() {
   const { user } = useUser();
@@ -51,6 +52,15 @@ function App() {
           </>
         }
       />
+      <Route
+        path="/not-authorized"
+        element={
+          <>
+            <PageTitle title="Not Authorized | Inventory of Koel Modish Apparels" />
+            <NotAuthorized />
+          </>
+        }
+      />
 
       {/* Protected Routes */}
       <Route
@@ -60,6 +70,16 @@ function App() {
             <DefaultLayout>
               <Routes>
                 {/* Dashboard */}
+                <Route
+                  path='/'
+                  element={
+                    <>
+                      <PageTitle title="Inventory Dashboard | Inventory of Koel Modish Apparels" />
+                      <Dashboard />
+                    </>
+                  }
+                />
+
                 <Route
                   path="/dashboard"
                   element={
@@ -80,7 +100,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/inventory/add"
+                  path="/inventory/add-edit"
                   element={
                     <>
                       <PageTitle title="Add Product | Inventory of Koel Modish Apparels" />
@@ -99,7 +119,7 @@ function App() {
                 />
                 {/* Supplier Management */}
                 <Route
-                  path="/suppliers/list"
+                  path="/supplier/list"
                   element={
                     <>
                       <PageTitle title="Supplier List | Inventory of Koel Modish Apparels" />
@@ -108,7 +128,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/suppliers/add"
+                  path="/supplier/add"
                   element={
                     <>
                       <PageTitle title="Add Supplier | Inventory of Koel Modish Apparels" />
@@ -136,7 +156,7 @@ function App() {
                   }
                 />
                 <Route
-                  path="/orders/track-fulfillment"
+                  path="/orders/tracking"
                   element={
                     <>
                       <PageTitle title="Track Fulfillment | Inventory of Koel Modish Apparels" />
@@ -212,13 +232,12 @@ function App() {
                 />
                 {/* Settings */}
                 <Route
-                  // allowed={user?.role === 'admin'}
                   path="/settings/system"
                   element={
-                    <>
+                    <PrivateRoute allowed={"admin"}>
                       <PageTitle title="System Settings | Inventory of Koel Modish Apparels" />
                       <SystemSettings />
-                    </>
+                    </PrivateRoute>
                   }
                 />
               </Routes>

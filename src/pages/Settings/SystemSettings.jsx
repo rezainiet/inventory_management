@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
 
-const SystemSettings = () => {
+const SystemSettings = ({ allowed }) => {
     const [notifications, setNotifications] = useState(true);
     const [darkMode, setDarkMode] = useState(false);
     const [language, setLanguage] = useState('English');
@@ -9,7 +9,7 @@ const SystemSettings = () => {
     const handleToggleNotification = () => setNotifications(!notifications);
     const handleToggleDarkMode = () => setDarkMode(!darkMode);
     const handleLanguageChange = (e) => setLanguage(e.target.value);
-
+    console.log(allowed);
     return (
         <div>
             <Breadcrumb pageName="System Settings" />

@@ -141,7 +141,7 @@ const SignIn = () => {
     loading,
     error,
   ] = useSignInWithEmailAndPassword(auth);
-
+  console.log("Something i'm trying to console")
   if (error) {
     return (
       <div className="text-center text-red-500">

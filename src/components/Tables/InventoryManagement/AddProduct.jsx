@@ -10,7 +10,8 @@ const AddProduct = () => {
         colors: [],
         sizes: [],
         stock: 0,          // Stock field
-        price: 0,          // Price per quantity field
+        price: 0,   // Price per quantity field
+        productionCost: 0,       // Production Cost quantity field   
         supplier: '',       // Supplier field
         image: '',          // Image link field
         description: '',    // Description field
@@ -318,7 +319,23 @@ const AddProduct = () => {
                                     value={productData.price}
                                     onChange={handleInputChange}
                                     min="0"
-                                    step="0.01"
+                                    step="1"
+                                    required
+                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                    placeholder="Enter price"
+                                />
+                            </div>
+                            <div className="w-full">
+                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                    Production Cost
+                                </label>
+                                <input
+                                    type="number"
+                                    name="productionCost"
+                                    value={productData.productionCost}
+                                    onChange={handleInputChange}
+                                    min="0"
+                                    step="1"
                                     required
                                     className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
                                     placeholder="Enter price"

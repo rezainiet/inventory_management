@@ -11,6 +11,7 @@ const EditProduct = () => {
         sizes: [],
         stock: 0,
         price: 0,
+        productionCost: 0,
         supplier: '',
         image: '',
         description: '',
@@ -150,161 +151,184 @@ const EditProduct = () => {
                     {selectedProduct && (
                         <>
                             {/* Product Name */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Name
-                                </label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={productData.name}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                    placeholder="Enter product name"
-                                />
+                            <div className='flex items-center justify-center gap-5'>
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={productData.name}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                        placeholder="Enter product name"
+                                    />
+                                </div>
+
+                                {/* Product Category */}
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Product Category
+                                    </label>
+                                    <select
+                                        name="category"
+                                        value={productData.category}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                    >
+                                        <option value="">Select Product Category</option>
+                                        <option value="T-Shirt">T-Shirt</option>
+                                        <option value="Leather">Leather</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            {/* Product Category */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Product Category
-                                </label>
-                                <select
-                                    name="category"
-                                    value={productData.category}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                >
-                                    <option value="">Select Product Category</option>
-                                    <option value="T-Shirt">T-Shirt</option>
-                                    <option value="Leather">Leather</option>
-                                </select>
-                            </div>
-
-                            {/* Supplier */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Supplier
-                                </label>
-                                <Select
-                                    options={suppliers.map(supplier => ({ value: supplier._id, label: supplier.name }))}
-                                    onChange={(option) => setProductData(prev => ({ ...prev, supplier: option.value }))}
-                                    value={suppliers.find(supplier => supplier._id === productData.supplier)}
-                                    className="mt-1"
-                                    classNamePrefix="react-select"
-                                    placeholder="Select or search supplier"
-                                    styles={{
-                                        control: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: '#24303F',
-                                            borderColor: '#4B4B4B',
-                                            boxShadow: 'none',
-                                            '&:hover': {
+                            <div className='flex gap-10 w-full'>
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Supplier
+                                    </label>
+                                    <Select
+                                        options={suppliers.map(supplier => ({ value: supplier._id, label: supplier.name }))}
+                                        onChange={(option) => setProductData(prev => ({ ...prev, supplier: option.value }))}
+                                        value={suppliers.find(supplier => supplier._id === productData.supplier)}
+                                        className="mt-1"
+                                        classNamePrefix="react-select"
+                                        placeholder="Select or search supplier"
+                                        styles={{
+                                            control: (provided) => ({
+                                                ...provided,
+                                                backgroundColor: '#24303F',
                                                 borderColor: '#4B4B4B',
-                                            }
-                                        }),
-                                        menu: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: '#24303F',
-                                        }),
-                                        option: (provided, state) => ({
-                                            ...provided,
-                                            backgroundColor: state.isSelected ? '#4B4B4B' : '#24303F',
-                                            color: state.isSelected ? '#FFFFFF' : '#B0B0B0',
-                                            '&:hover': {
-                                                backgroundColor: '#4B4B4B',
+                                                boxShadow: 'none',
+                                                '&:hover': {
+                                                    borderColor: '#4B4B4B',
+                                                }
+                                            }),
+                                            menu: (provided) => ({
+                                                ...provided,
+                                                backgroundColor: '#24303F',
+                                            }),
+                                            option: (provided, state) => ({
+                                                ...provided,
+                                                backgroundColor: state.isSelected ? '#4B4B4B' : '#24303F',
+                                                color: state.isSelected ? '#FFFFFF' : '#B0B0B0',
+                                                '&:hover': {
+                                                    backgroundColor: '#4B4B4B',
+                                                    color: '#FFFFFF',
+                                                }
+                                            }),
+                                            placeholder: (provided) => ({
+                                                ...provided,
+                                                color: '#B0B0B0',
+                                            }),
+                                            singleValue: (provided) => ({
+                                                ...provided,
                                                 color: '#FFFFFF',
-                                            }
-                                        }),
-                                        placeholder: (provided) => ({
-                                            ...provided,
-                                            color: '#B0B0B0',
-                                        }),
-                                        singleValue: (provided) => ({
-                                            ...provided,
-                                            color: '#FFFFFF',
-                                        }),
-                                        dropdownIndicator: (provided) => ({
-                                            ...provided,
-                                            color: '#B0B0B0',
-                                        }),
-                                        input: (provided) => ({
-                                            ...provided,
-                                            color: 'white', // Red text color for input
-                                        }),
-                                    }}
-                                />
+                                            }),
+                                            dropdownIndicator: (provided) => ({
+                                                ...provided,
+                                                color: '#B0B0B0',
+                                            }),
+                                            input: (provided) => ({
+                                                ...provided,
+                                                color: 'white', // Red text color for input
+                                            }),
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Stock */}
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        In Stock
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="stock"
+                                        value={productData.stock}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                        placeholder="Enter product stock"
+                                    />
+                                </div>
                             </div>
 
+                            <div className='flex gap-10 w-full'>
 
-                            {/* Colors */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Colors
-                                </label>
-                                <input
-                                    type="text"
-                                    value={productData.colors.join(', ')}
-                                    onChange={handleColorChange}
-                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                    placeholder="Enter colors, separated by commas"
-                                />
+
+                                {/* Colors */}
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Colors
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={productData.colors.join(', ')}
+                                        onChange={handleColorChange}
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                        placeholder="Enter colors, separated by commas"
+                                    />
+                                </div>
+
+                                {/* Sizes */}
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Sizes
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={productData.sizes.join(', ')}
+                                        onChange={handleSizeChange}
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                        placeholder="Enter sizes, separated by commas"
+                                    />
+                                </div>
                             </div>
 
-                            {/* Sizes */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Sizes
-                                </label>
-                                <input
-                                    type="text"
-                                    value={productData.sizes.join(', ')}
-                                    onChange={handleSizeChange}
-                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                    placeholder="Enter sizes, separated by commas"
-                                />
-                            </div>
-
-                            {/* Stock */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Stock
-                                </label>
-                                <input
-                                    type="number"
-                                    name="stock"
-                                    value={productData.stock}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                    placeholder="Enter product stock"
-                                />
-                            </div>
-
-                            {/* Price */}
-                            <div className="mt-4">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-white">
-                                    Price
-                                </label>
-                                <input
-                                    type="number"
-                                    name="price"
-                                    value={productData.price}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
-                                    placeholder="Enter product price"
-                                />
+                            <div className='flex gap-10 w-full'>
+                                {/* Price */}
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Price
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="price"
+                                        value={productData.price}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                        placeholder="Enter product price"
+                                    />
+                                </div>
+                                <div className="mt-4 w-full">
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-white">
+                                        Production Cost
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="productionCost"
+                                        value={productData.productionCost}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="mt-1 block w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 focus:border-indigo-400 dark:bg-boxdark dark:border-strokedark dark:focus:ring-indigo-500"
+                                        placeholder="Enter product price"
+                                    />
+                                </div>
                             </div>
 
                             {/* Description */}
-                            <div className="mt-4">
+                            <div className="mt-4 w-full">
                                 <label className="block text-sm font-medium text-gray-700 dark:text-white">
                                     Description
                                 </label>
                                 <textarea
+                                    rows={5}
                                     name="description"
                                     value={productData.description}
                                     onChange={handleInputChange}
