@@ -1,198 +1,283 @@
-import { useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { CSVLink } from 'react-csv'; // For exporting CSV
-import * as XLSX from 'xlsx'; // For exporting Excel
-import jsPDF from 'jspdf'; // For exporting PDF
-import 'jspdf-autotable'; // For PDF table support
+import React, { useEffect, useState } from "react";
+import { Calendar, ShoppingCart, DollarSign, TrendingUp, TrendingDown } from "lucide-react";
+import { Line } from "react-chartjs-2";
+import { Chart, registerables } from "chart.js";
+import { getLastMonthSales, getLastSevenDaysSales, getTopSellingProducts, getTotalSales } from "../../utils/apiUtils";
 
-// Sample data for sales reports
-const salesData = [
-    {
-        orderId: 'ORD001',
-        customerName: 'John Doe',
-        totalAmount: 150.0,
-        orderDate: 'Sep 01, 2024',
-    },
-    {
-        orderId: 'ORD002',
-        customerName: 'Jane Smith',
-        totalAmount: 200.0,
-        orderDate: 'Sep 02, 2024',
-    },
-    {
-        orderId: 'ORD003',
-        customerName: 'Alice Johnson',
-        totalAmount: 250.0,
-        orderDate: 'Sep 03, 2024',
-    },
-    {
-        orderId: 'ORD004',
-        customerName: 'Bob Brown',
-        totalAmount: 300.0,
-        orderDate: 'Sep 04, 2024',
-    },
-    {
-        orderId: 'ORD005',
-        customerName: 'Waliul Hasan Raju',
-        totalAmount: 500.0,
-        orderDate: 'Sep 07, 2024',
-    },
-];
+Chart.register(...registerables);
 
-const SalesReport = () => {
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+const monthlySales = [4500, 5000, 4800, 5200, 5800, 6000];
 
-    // Filter sales data based on date range
-    const filteredSales = salesData.filter(sale => {
-        const saleDate = new Date(sale.orderDate);
-        const start = new Date(startDate);
-        const end = new Date(endDate);
-        return (
-            (!startDate || saleDate >= start) &&
-            (!endDate || saleDate <= end)
-        );
-    });
+export default function FocusedSalesReport() {
+    const [activeTab, setActiveTab] = useState("overview");
+    const [loading, setLoading] = useState(false);
+    const [lastMonthSales, setLastMonthSales] = useState();
+    const [lastSevenDaysSales, setLastSevenDaysSales] = useState();
+    const [allTimeSales, setAllTimeSales] = useState();
+    const [topSellingProducts, setTopSellingProducts] = useState([]);
 
-    // Export to Excel
-    const exportToExcel = () => {
-        const worksheet = XLSX.utils.json_to_sheet(filteredSales);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'SalesReport');
-        XLSX.writeFile(workbook, 'SalesReport.xlsx');
+    useEffect(() => {
+        const getLastMonthSalesData = async () => {
+            setLoading(true);
+            try {
+                const data = await getLastMonthSales();
+                setLastMonthSales(data);
+            } catch (err) {
+                console.error("Error fetching last month sales data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getLastMonthSalesData();
+    }, []);
+
+    useEffect(() => {
+        const getLastSevenDaysSalesData = async () => {
+            setLoading(true);
+            try {
+                const data = await getLastSevenDaysSales();
+                setLastSevenDaysSales(data);
+            } catch (err) {
+                console.error("Error fetching last seven days sales data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getLastSevenDaysSalesData();
+    }, []);
+
+    useEffect(() => {
+        const getAllTimeSalesData = async () => {
+            setLoading(true);
+            try {
+                const data = await getTotalSales();
+                setAllTimeSales(data);
+            } catch (err) {
+                console.error("Error fetching all time sales data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        getAllTimeSalesData();
+    }, []);
+
+    // Fetching top selling products
+    useEffect(() => {
+        const fetchTopSellingProducts = async () => {
+            setLoading(true);
+            try {
+                const response = await getTopSellingProducts();
+                // Format the top-selling products data
+                const formattedProducts = response?.trendingProducts?.map(product => ({
+                    name: product.productDetails.name,
+                    sales: product.totalQuantity,
+                    price: product.productDetails.price,
+                    image: product.productDetails.image,
+                    trend: product.totalQuantity > 0 ? "up" : "down",
+                })) || [];
+                setTopSellingProducts(formattedProducts);
+            } catch (err) {
+                console.error("Error fetching top selling products:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchTopSellingProducts();
+    }, []);
+
+    const salesData = {
+        lastMonth: {
+            sales: lastMonthSales?.salesData?.length || 0,
+            amount: lastMonthSales?.totalSales || 0,
+        },
+        lastWeek: {
+            sales: lastSevenDaysSales?.salesData?.length || 0,
+            amount: lastSevenDaysSales?.totalSales || 0,
+        },
+        totalProfit: allTimeSales?.totalProfit || 0,
+        totalSales: allTimeSales?.salesData?.length || 0,
     };
 
-    // Export to PDF
-    const exportToPDF = () => {
-        const doc = new jsPDF();
-        doc.autoTable({
-            head: [['Order ID', 'Customer Name', 'Total Amount', 'Order Date']],
-            body: filteredSales.map(sale => [
-                sale.orderId,
-                sale.customerName,
-                `$${sale.totalAmount}`,
-                sale.orderDate,
-            ]),
-        });
-        doc.save('SalesReport.pdf');
+    const handleReportClick = () => {
+        setLoading(true);
+        setTimeout(() => {
+            alert("Detailed report generated.");
+            setLoading(false);
+        }, 1500);
     };
 
     return (
-        <div>
-            <Breadcrumb pageName="Sales Report" />
-            <div className="max-w-full p-8 bg-white rounded-lg shadow-lg dark:bg-boxdark">
-                <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
-                    Sales Report
-                </h2>
+        <div className="min-h-screen p-8 transition-all duration-300 bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
+            <div className="max-w-7xl mx-auto">
+                <header className="flex justify-between items-center mb-8">
+                    <h1 className="text-3xl font-bold">Sales Dashboard</h1>
+                </header>
 
-                <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div className="relative w-full sm:w-1/2">
-                        <label htmlFor="startDate" className="block text-gray-700 dark:text-white mb-2">
-                            Start Date
-                        </label>
-                        <DatePicker
-                            selected={startDate}
-                            onChange={(date) => setStartDate(date)}
-                            dateFormat="MMM d, yyyy"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white"
-                            placeholderText="Select Start Date"
-                        />
-                    </div>
-                    <div className="relative w-full sm:w-1/2">
-                        <label htmlFor="endDate" className="block text-gray-700 dark:text-white mb-2">
-                            End Date
-                        </label>
-                        <DatePicker
-                            selected={endDate}
-                            onChange={(date) => setEndDate(date)}
-                            dateFormat="MMM d, yyyy"
-                            className="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm dark:border-strokedark dark:bg-boxdark dark:text-white"
-                            placeholderText="Select End Date"
-                        />
-                    </div>
-                </div>
+                <nav className="mb-8">
+                    <ul className="flex space-x-4 bg-white dark:bg-slate-800 p-2 rounded-lg shadow-md">
+                        {["Overview", "Products", "Customers", "Trends"].map((tab) => (
+                            <li key={tab}>
+                                <button
+                                    onClick={() => setActiveTab(tab.toLowerCase())}
+                                    className={`px-4 py-2 rounded-md transition-colors duration-200 ${activeTab === tab.toLowerCase()
+                                        ? "bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100"
+                                        : "text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700"
+                                        }`}
+                                >
+                                    {tab}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
 
-                {/* Export buttons */}
-                <div className="mb-6 flex items-center gap-4">
-                    <CSVLink
-                        data={filteredSales}
-                        headers={[
-                            { label: 'Order ID', key: 'orderId' },
-                            { label: 'Customer Name', key: 'customerName' },
-                            { label: 'Total Amount', key: 'totalAmount' },
-                            { label: 'Order Date', key: 'orderDate' },
-                        ]}
-                        filename={'SalesReport.csv'}
-                        className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-sm hover:bg-blue-600"
-                    >
-                        Export CSV
-                    </CSVLink>
-                    <button
-                        onClick={exportToExcel}
-                        className="px-4 py-2 bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600"
-                    >
-                        Export Excel
-                    </button>
-                    <button
-                        onClick={exportToPDF}
-                        className="px-4 py-2 bg-red-500 text-white rounded-md shadow-sm hover:bg-red-600"
-                    >
-                        Export PDF
-                    </button>
-                </div>
-
-                {/* Sales Table */}
-                <div className="overflow-x-auto">
-                    <table className="w-full table-auto border-collapse dark:border-strokedark">
-                        <thead>
-                            <tr className="bg-gray-200 dark:bg-meta-4">
-                                <th className="py-4 px-6 font-medium text-left text-gray-800 dark:text-white">
-                                    Order ID
-                                </th>
-                                <th className="py-4 px-6 font-medium text-left text-gray-800 dark:text-white">
-                                    Customer Name
-                                </th>
-                                <th className="py-4 px-6 font-medium text-center text-gray-800 dark:text-white">
-                                    Total Amount
-                                </th>
-                                <th className="py-4 px-6 font-medium text-center text-gray-800 dark:text-white">
-                                    Order Date
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredSales.length > 0 ? (
-                                filteredSales.map((sale, index) => (
-                                    <tr key={index} className="border-b dark:border-strokedark">
-                                        <td className="py-4 px-6 text-gray-800 dark:text-white">
-                                            {sale.orderId}
-                                        </td>
-                                        <td className="py-4 px-6 text-gray-800 dark:text-white">
-                                            {sale.customerName}
-                                        </td>
-                                        <td className="py-4 px-6 text-center text-gray-800 dark:text-white">
-                                            ${sale.totalAmount}
-                                        </td>
-                                        <td className="py-4 px-6 text-center text-gray-800 dark:text-white">
-                                            {sale.orderDate}
-                                        </td>
-                                    </tr>
-                                ))
-                            ) : (
-                                <tr>
-                                    <td colSpan="4" className="py-4 px-6 text-center text-gray-800 dark:text-white">
-                                        No sales data available for the selected date range.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
+                {activeTab === "overview" && (
+                    <Overview
+                        salesData={salesData}
+                        monthlySales={monthlySales}
+                        topProducts={topSellingProducts} // Use the formatted products here
+                        handleReportClick={handleReportClick}
+                        loading={loading}
+                    />
+                )}
+                {activeTab === "products" && <ProductsTab products={topSellingProducts} />} {/* Use the correct state */}
+                {activeTab === "customers" && <CustomersTab />}
+                {activeTab === "trends" && <TrendsTab />}
             </div>
         </div>
     );
-};
+}
 
-export default SalesReport;
+function Overview({ salesData, monthlySales, topProducts, handleReportClick, loading }) {
+    return (
+        <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <SalesMetricCard
+                    title="Last Month Sales"
+                    value={salesData.lastMonth.sales}
+                    subValue={`৳${salesData.lastMonth.amount.toLocaleString()}`}
+                    icon={<Calendar className="h-6 w-6 text-slate-400" />}
+                />
+                <SalesMetricCard
+                    title="Last 7 Days Sales"
+                    value={salesData.lastWeek.sales}
+                    subValue={`৳${salesData.lastWeek.amount.toLocaleString()}`}
+                    icon={<ShoppingCart className="h-6 w-6 text-slate-400" />}
+                />
+                <SalesMetricCard
+                    title="Total Profit"
+                    value={`৳${salesData.totalProfit.toLocaleString()}`}
+                    subValue={`From ${salesData.totalSales} sales`}
+                    icon={<DollarSign className="h-6 w-6 text-slate-400" />}
+                />
+                <SalesMetricCard
+                    title="Sales Growth"
+                    value="+12.5%"
+                    subValue="Compared to last month"
+                    icon={<TrendingUp className="h-6 w-6 text-slate-400" />}
+                />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                    <SalesChart data={monthlySales} />
+                </div>
+                <div>
+                    <TopSellingProducts products={topProducts} />
+                </div>
+            </div>
+
+            <div className="mt-8 text-center">
+                <Button onClick={handleReportClick} loading={loading}>
+                    Generate Detailed Report
+                </Button>
+            </div>
+        </>
+    );
+}
+
+function ProductsTab({ products }) {
+    return (
+        <div>
+            <h2 className="text-2xl font-bold mb-4">Products</h2>
+            <ul>
+                {products.map((product, index) => (
+                    <li key={index} className="mb-2">
+                        {product.name}
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function CustomersTab() {
+    return <h2 className="text-2xl font-bold">Customers</h2>;
+}
+
+function TrendsTab() {
+    return <h2 className="text-2xl font-bold">Trends</h2>;
+}
+
+function SalesMetricCard({ title, value, subValue, icon }) {
+    return (
+        <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">{title}</h3>
+                {icon}
+            </div>
+            <div className="text-3xl font-bold">{value}</div>
+            <div className="text-sm text-slate-500">{subValue}</div>
+        </div>
+    );
+}
+
+function SalesChart({ data }) {
+    const chartData = {
+        labels: data.map((_, index) => `Week ${index + 1}`),
+        datasets: [
+            {
+                label: "Sales",
+                data: data,
+                borderColor: "#4F46E5",
+                backgroundColor: "rgba(79, 70, 229, 0.2)",
+                borderWidth: 2,
+                fill: true,
+            },
+        ],
+    };
+
+    return (
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
+            <Line data={chartData} options={{ responsive: true }} />
+        </div>
+    );
+}
+
+function TopSellingProducts({ products }) {
+    return (
+        <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
+            <h2 className="text-xl font-bold mb-4">Top Selling Products</h2>
+            <ul>
+                {products.map((product, index) => (
+                    <li key={index} className="flex justify-between items-center mb-2">
+                        <span>{product.name}</span>
+                        <span>{product.sales}</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+function Button({ children, onClick, loading }) {
+    return (
+        <button
+            onClick={onClick}
+            className={`px-4 py-2 rounded-md bg-blue-600 text-white ${loading ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"}`}
+            disabled={loading}
+        >
+            {loading ? "Loading..." : children}
+        </button>
+    );
+}

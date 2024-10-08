@@ -43,7 +43,7 @@ const EditProduct = () => {
         if (selectedProduct) {
             const fetchProductDetails = async () => {
                 try {
-                    const response = await fetch(`https://koel-inventory-backend.vercel.app/api/v1/products/${selectedProduct}`);
+                    const response = await fetch(`http://localhost:4000/api/v1/products/${selectedProduct}`);
                     const data = await response.json();
                     setProductData(data);
                 } catch (error) {

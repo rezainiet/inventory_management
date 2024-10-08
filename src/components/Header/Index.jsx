@@ -9,7 +9,7 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebaseinit';
 
 const Header = (props) => {
-    const { user, userData, loading, error, fetching, updateUser } = useUser(); // Use the custom hook
+    const { user, userData, loading, error, fetching } = useUser(); // Use the custom hook
     console.log(userData);
 
     // Log out handler
