@@ -122,7 +122,8 @@ const CreateOrder = () => {
         setSearchTerm(term);
         const filtered = products.filter(product =>
             product.name.toLowerCase().includes(term) ||
-            product.sku.toLowerCase().includes(term)
+            product.sku.toLowerCase().includes(term) ||
+            product.price.toLowerCase().includes(term)
         );
         setFilteredProducts(filtered);
     };
@@ -152,13 +153,13 @@ const CreateOrder = () => {
                 <div className="w-2/3 pr-6 overflow-y-auto">
                     {activeTab === 'products' && (
                         <>
-                            <div className="mb-6 relative">
+                            <div className="mb-6 relative ml-1 mt-1">
                                 <input
                                     type="text"
                                     placeholder="Search by product name or SKU"
                                     value={searchTerm}
                                     onChange={handleSearchChange}
-                                    className="w-full px-4 py-2 pl-10 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                    className="w-full px-4 py-2 pl-10 border border-slate-300 rounded-md   dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                 />
                                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" />
                             </div>
@@ -170,7 +171,7 @@ const CreateOrder = () => {
                                             <h3 className="font-semibold text-slate-800 dark:text-white">{product.name}</h3>
                                             <p className="text-sm text-slate-600 dark:text-slate-300">SKU: {product.sku}</p>
                                             <p className="text-sm text-slate-600 dark:text-slate-300">Stock: {product.stock}</p>
-                                            <p className="text-sm font-medium text-slate-800 dark:text-white">Price: ${product.price}</p>
+                                            <p className="text-sm font-medium text-slate-800 dark:text-white">Price: ৳{product.price}</p>
                                         </div>
                                         <button
                                             className="mt-2 px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-md transition duration-300"
@@ -185,7 +186,7 @@ const CreateOrder = () => {
                     )}
 
                     {activeTab === 'customer' && (
-                        <div className="space-y-4">
+                        <div className="space-y-4 ml-1">
                             {['name', 'phone', 'email'].map((field) => (
                                 <div key={field} className="flex flex-col">
                                     <label htmlFor={field} className="mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -196,7 +197,7 @@ const CreateOrder = () => {
                                         id={field}
                                         value={customerInfo[field]}
                                         onChange={(e) => setCustomerInfo({ ...customerInfo, [field]: e.target.value })}
-                                        className="px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                        className="px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 hover:border-indigo-400 transition-all ease-in-out duration-300 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                     />
                                 </div>
                             ))}
@@ -209,14 +210,14 @@ const CreateOrder = () => {
                                     value={customerInfo.address}
                                     onChange={(e) => setCustomerInfo({ ...customerInfo, address: e.target.value })}
                                     rows={4}
-                                    className="px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                    className="px-4 py-2 border border-slate-300 rounded-md dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                 />
                             </div>
                         </div>
                     )}
 
                     {activeTab === 'payment' && (
-                        <div className="space-y-6">
+                        <div className="space-y-6 ml-1">
                             <div className="flex flex-col">
                                 <label htmlFor="paymentMethod" className="mb-1 text-sm font-medium text-slate-700 dark:text-slate-300">
                                     Payment Method
@@ -225,7 +226,7 @@ const CreateOrder = () => {
                                     id="paymentMethod"
                                     value={paymentMethod}
                                     onChange={(e) => setPaymentMethod(e.target.value)}
-                                    className="px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                    className="px-4 py-2 border border-slate-300 rounded-md   dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                 >
                                     <option value="">Select payment method</option>
                                     <option value="Cash">Cash</option>
@@ -243,7 +244,7 @@ const CreateOrder = () => {
                                         min="0"
                                         value={field === 'discount' ? discount : tax}
                                         onChange={(e) => field === 'discount' ? setDiscount(parseFloat(e.target.value) || 0) : setTax(parseFloat(e.target.value) || 0)}
-                                        className="px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                        className="px-4 py-2 border border-slate-300 rounded-md   dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                     />
                                 </div>
                             ))}
@@ -256,7 +257,7 @@ const CreateOrder = () => {
                                     value={notes}
                                     onChange={(e) => setNotes(e.target.value)}
                                     rows={4}
-                                    className="px-4 py-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-transparent dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                    className="px-4 py-2 border border-slate-300 rounded-md   dark:bg-slate-700 dark:border-slate-600 dark:text-white"
                                 />
                             </div>
                         </div>
@@ -269,7 +270,7 @@ const CreateOrder = () => {
                         <div key={item._id} className="flex justify-between items-center py-2 border-b border-slate-200 dark:border-slate-600">
                             <div className="flex-1">
                                 <p className="font-medium text-slate-800 dark:text-white">{item.name}</p>
-                                <p className="text-sm text-slate-600 dark:text-slate-300">Price: ${item.price}</p>
+                                <p className="text-sm text-slate-600 dark:text-slate-300">Price: ৳{item.price}</p>
                             </div>
                             <div className="flex items-center space-x-2">
                                 <button onClick={() => handleQuantityChange(item._id, -1)} className="p-1 bg-slate-200 dark:bg-slate-600 rounded">
@@ -286,10 +287,10 @@ const CreateOrder = () => {
                         </div>
                     ))}
                     <div className="mt-4 space-y-2">
-                        <p className="text-lg font-semibold text-slate-800 dark:text-white">Subtotal: ${totalAmount.toFixed(2)}</p>
-                        <p className="text-slate-600 dark:text-slate-300">Discount: ${discount.toFixed(2)}</p>
-                        <p className="text-slate-600 dark:text-slate-300">Tax: ${tax.toFixed(2)}</p>
-                        <p className="text-xl font-bold text-slate-800 dark:text-white">Total: ${finalAmount.toFixed(2)}</p>
+                        <p className="text-lg font-semibold text-slate-800 dark:text-white">Subtotal: ৳{totalAmount.toFixed(2)}</p>
+                        <p className="text-slate-600 dark:text-slate-300">Discount: ৳{discount.toFixed(2)}</p>
+                        <p className="text-slate-600 dark:text-slate-300">Tax: ৳{tax.toFixed(2)}</p>
+                        <p className="text-xl font-bold text-slate-800 dark:text-white">Total: ৳{finalAmount.toFixed(2)}</p>
                     </div>
                 </div>
             </div>

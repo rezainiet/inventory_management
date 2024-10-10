@@ -15,7 +15,7 @@ const DropdownUser = ({ user }) => {
         fetching } = useUser();
 
 
-    console.log(userData)
+    // console.log(userData)
     const handleLogOut = () => {
         signOut(auth);
     }

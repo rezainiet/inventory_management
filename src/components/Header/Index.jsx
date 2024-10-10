@@ -10,7 +10,7 @@ import { auth } from '../../firebaseinit';
 
 const Header = (props) => {
     const { user, userData, loading, error, fetching } = useUser(); // Use the custom hook
-    console.log(userData);
+    // console.log(userData);
 
     // Log out handler
     const handleLogout = async () => {

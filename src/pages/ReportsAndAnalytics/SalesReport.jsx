@@ -68,14 +68,14 @@ export default function FocusedSalesReport() {
             try {
                 const response = await getTopSellingProducts();
                 // Format the top-selling products data
-                const formattedProducts = response?.trendingProducts?.map(product => ({
-                    name: product.productDetails.name,
-                    sales: product.totalQuantity,
-                    price: product.productDetails.price,
-                    image: product.productDetails.image,
-                    trend: product.totalQuantity > 0 ? "up" : "down",
-                })) || [];
-                setTopSellingProducts(formattedProducts);
+                // const formattedProducts = response?.trendingProducts?.map(product => ({
+                //     name: product.productDetails.name,
+                //     sales: product.totalQuantity,
+                //     price: product.productDetails.price,
+                //     image: product.productDetails.image,
+                //     trend: product.totalQuantity > 0 ? "up" : "down",
+                // })) || [];
+                setTopSellingProducts(response?.topSellingProducts);
             } catch (err) {
                 console.error("Error fetching top selling products:", err);
             } finally {
@@ -84,6 +84,7 @@ export default function FocusedSalesReport() {
         };
         fetchTopSellingProducts();
     }, []);
+    console.log(topSellingProducts)
 
     const salesData = {
         lastMonth: {
@@ -258,15 +259,20 @@ function TopSellingProducts({ products }) {
     return (
         <div className="bg-white dark:bg-slate-800 p-4 rounded-lg shadow-md">
             <h2 className="text-xl font-bold mb-4">Top Selling Products</h2>
-            <ul>
-                {products.map((product, index) => (
-                    <li key={index} className="flex justify-between items-center mb-2">
-                        <span>{product.name}</span>
-                        <span>{product.sales}</span>
+            <ul className="space-y-4">
+                {products?.map((product, index) => (
+                    <li key={index} className="flex justify-between items-center p-3 bg-slate-100 dark:bg-slate-700 rounded-md">
+                        <span>{product?.productDetails.name}</span>
+                        <span><span className="text-green-400 font-bold text-2xl">{product?.totalQuantitySold}</span> Sold</span>
+                        {product.trend === "up" ? (
+                            <TrendingDown className="h-5 w-5 text-red-500" />
+                        ) : (
+                            <TrendingUp className="h-5 w-5 text-green-500" />
+                        )}
                     </li>
                 ))}
             </ul>
-        </div>
+        </div >
     );
 }
 

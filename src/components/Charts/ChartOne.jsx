@@ -1,4 +1,3 @@
-import { ApexOptions } from 'apexcharts';
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
@@ -21,7 +20,6 @@ const options = {
             left: 0,
             opacity: 0.1,
         },
-
         toolbar: {
             show: false,
         },
@@ -48,10 +46,6 @@ const options = {
         width: [2, 2],
         curve: 'straight',
     },
-    // labels: {
-    //   show: false,
-    //   position: "top",
-    // },
     grid: {
         xaxis: {
             lines: {
@@ -75,27 +69,14 @@ const options = {
         strokeOpacity: 0.9,
         strokeDashArray: 0,
         fillOpacity: 1,
-        discrete: [],
         hover: {
-            size: undefined,
             sizeOffset: 5,
         },
     },
     xaxis: {
         type: 'category',
         categories: [
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'May',
-            'Jun',
-            'Jul',
-            'Aug',
+            'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
         ],
         axisBorder: {
             show: false,
@@ -105,37 +86,31 @@ const options = {
         },
     },
     yaxis: {
-        title: {
-            style: {
-                fontSize: '0px',
-            },
-        },
         min: 0,
         max: 100,
     },
 };
 
 const ChartOne = () => {
-    const [state, setState] = useState({
-        series: [
-            {
-                name: 'Product One',
-                data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-            },
-
-            {
-                name: 'Product Two',
-                data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-            },
+    const [selectedPeriod, setSelectedPeriod] = useState('Day');
+    const [series, setSeries] = useState({
+        day: [
+            { name: 'Product One', data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45] },
+            { name: 'Product Two', data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51] },
+        ],
+        week: [
+            { name: 'Product One', data: [150, 120, 130, 180, 100, 140, 160] },
+            { name: 'Product Two', data: [200, 180, 190, 220, 170, 210, 230] },
+        ],
+        month: [
+            { name: 'Product One', data: [700, 800, 750, 850, 900, 920] },
+            { name: 'Product Two', data: [820, 950, 890, 1020, 1040, 1100] },
         ],
     });
 
-    const handleReset = () => {
-        setState((prevState) => ({
-            ...prevState,
-        }));
+    const handlePeriodChange = (period) => {
+        setSelectedPeriod(period);
     };
-    handleReset;
 
     return (
         <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
@@ -162,15 +137,18 @@ const ChartOne = () => {
                 </div>
                 <div className="flex w-full max-w-45 justify-end">
                     <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-                        <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-                            Day
-                        </button>
-                        <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-                            Week
-                        </button>
-                        <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-                            Month
-                        </button>
+                        {['Day', 'Week', 'Month'].map((period) => (
+                            <button
+                                key={period}
+                                className={`rounded py-1 px-3 text-xs font-medium ${selectedPeriod === period
+                                    ? 'bg-primary text-white'
+                                    : 'text-black hover:bg-white dark:text-white dark:hover:bg-boxdark'
+                                    }`}
+                                onClick={() => handlePeriodChange(period)}
+                            >
+                                {period}
+                            </button>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -179,7 +157,7 @@ const ChartOne = () => {
                 <div id="chartOne" className="-ml-5">
                     <ReactApexChart
                         options={options}
-                        series={state.series}
+                        series={series[selectedPeriod.toLowerCase()]}
                         type="area"
                         height={350}
                     />
