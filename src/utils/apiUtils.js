@@ -3,6 +3,7 @@
 import axios from "axios";
 
 const API_BASE_URL = 'http://localhost:4000/api/v1';
+// const API_BASE_URL = 'https://koel-inventory-backend.vercel.app/api/v1';
 const SECRET_KEY = '78enjakzlyfqva8w5plsoo3h';
 const API_KEY = 'xy5p4dgkucgaybm3qmtygyujkcbg1o2u';
 

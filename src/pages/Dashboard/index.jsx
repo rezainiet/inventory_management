@@ -5,12 +5,14 @@ import ChartTwo from '../../components/Charts/ChartTwo';
 import ChartThree from '../../components/Charts/ChartThree';
 import TableOne from '../../components/Tables/TableOne';
 import EasyCards from './EasyCards';
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
     return (
         <>
             <EasyCards />
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
+                <h2 className='text-xl'>Dummy Data are showing <span className='text-green-500 font-semibold hover:underline cursor-pointer'><Link to="/reports/sales">click here</Link></span> to see live data.</h2>
                 <CardDataStats title="Total Sales" total="$3.457K" rate="0.43%" levelUp>
                     <svg
                         className="fill-primary dark:fill-white"

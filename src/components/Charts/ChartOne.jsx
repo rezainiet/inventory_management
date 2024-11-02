@@ -1,102 +1,12 @@
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const options = {
-    legend: {
-        show: false,
-        position: 'top',
-        horizontalAlign: 'left',
-    },
-    colors: ['#3C50E0', '#80CAEE'],
-    chart: {
-        fontFamily: 'Satoshi, sans-serif',
-        height: 335,
-        type: 'area',
-        dropShadow: {
-            enabled: true,
-            color: '#623CEA14',
-            top: 10,
-            blur: 4,
-            left: 0,
-            opacity: 0.1,
-        },
-        toolbar: {
-            show: false,
-        },
-    },
-    responsive: [
-        {
-            breakpoint: 1024,
-            options: {
-                chart: {
-                    height: 300,
-                },
-            },
-        },
-        {
-            breakpoint: 1366,
-            options: {
-                chart: {
-                    height: 350,
-                },
-            },
-        },
-    ],
-    stroke: {
-        width: [2, 2],
-        curve: 'straight',
-    },
-    grid: {
-        xaxis: {
-            lines: {
-                show: true,
-            },
-        },
-        yaxis: {
-            lines: {
-                show: true,
-            },
-        },
-    },
-    dataLabels: {
-        enabled: false,
-    },
-    markers: {
-        size: 4,
-        colors: '#fff',
-        strokeColors: ['#3056D3', '#80CAEE'],
-        strokeWidth: 3,
-        strokeOpacity: 0.9,
-        strokeDashArray: 0,
-        fillOpacity: 1,
-        hover: {
-            sizeOffset: 5,
-        },
-    },
-    xaxis: {
-        type: 'category',
-        categories: [
-            'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug',
-        ],
-        axisBorder: {
-            show: false,
-        },
-        axisTicks: {
-            show: false,
-        },
-    },
-    yaxis: {
-        min: 0,
-        max: 100,
-    },
-};
-
 const ChartOne = () => {
     const [selectedPeriod, setSelectedPeriod] = useState('Day');
-    const [series, setSeries] = useState({
+    const [series] = useState({
         day: [
-            { name: 'Product One', data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45] },
-            { name: 'Product Two', data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51] },
+            { name: 'Product One', data: Array(30).fill().map(() => Math.floor(Math.random() * 50)) }, // Random data
+            { name: 'Product Two', data: Array(30).fill().map(() => Math.floor(Math.random() * 70)) },
         ],
         week: [
             { name: 'Product One', data: [150, 120, 130, 180, 100, 140, 160] },
@@ -107,6 +17,99 @@ const ChartOne = () => {
             { name: 'Product Two', data: [820, 950, 890, 1020, 1040, 1100] },
         ],
     });
+
+    const generateLastDays = (numDays) => {
+        const dates = [];
+        for (let i = numDays - 1; i >= 0; i--) {
+            const date = new Date();
+            date.setDate(date.getDate() - i);
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            dates.push(`${month}/${day}`);
+        }
+        return dates;
+    };
+
+    const xaxisCategories = {
+        day: generateLastDays(30),
+        week: ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'],
+        month: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    };
+
+    const calculateMaxY = (data) => {
+        const allDataPoints = data.flatMap(series => series.data);
+        return Math.max(...allDataPoints) * 1.1; // Increase by 10%
+    };
+
+    const options = {
+        legend: {
+            show: false,
+            position: 'top',
+            horizontalAlign: 'left',
+        },
+        colors: ['#3C50E0', '#80CAEE'],
+        chart: {
+            fontFamily: 'Satoshi, sans-serif',
+            height: 335,
+            type: 'area',
+            dropShadow: {
+                enabled: true,
+                color: '#623CEA14',
+                top: 10,
+                blur: 4,
+                left: 0,
+                opacity: 0.1,
+            },
+            toolbar: {
+                show: false,
+            },
+        },
+        stroke: {
+            width: [2, 2],
+            curve: 'straight',
+        },
+        grid: {
+            xaxis: {
+                lines: {
+                    show: true,
+                },
+            },
+            yaxis: {
+                lines: {
+                    show: true,
+                },
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        markers: {
+            size: 4,
+            colors: '#fff',
+            strokeColors: ['#3056D3', '#80CAEE'],
+            strokeWidth: 3,
+            strokeOpacity: 0.9,
+            strokeDashArray: 0,
+            fillOpacity: 1,
+            hover: {
+                sizeOffset: 5,
+            },
+        },
+        xaxis: {
+            type: 'category',
+            categories: xaxisCategories[selectedPeriod.toLowerCase()],
+            axisBorder: {
+                show: false,
+            },
+            axisTicks: {
+                show: false,
+            },
+        },
+        yaxis: {
+            min: 0,
+            max: calculateMaxY(series[selectedPeriod.toLowerCase()]), // Dynamic Y-axis scaling
+        },
+    };
 
     const handlePeriodChange = (period) => {
         setSelectedPeriod(period);
