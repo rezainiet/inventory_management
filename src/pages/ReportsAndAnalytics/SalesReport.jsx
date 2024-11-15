@@ -107,6 +107,8 @@ export default function FocusedSalesReport() {
         }, 1500);
     };
 
+    console.log("All time sales from line no: 110", allTimeSales);
+
     return (
         <div className="min-h-screen p-8 transition-all duration-300 bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
             <div className="max-w-7xl mx-auto">

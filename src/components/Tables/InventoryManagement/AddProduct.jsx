@@ -113,7 +113,8 @@ export default function AddProduct() {
                         <option value="">Select Product Category</option>
                         <option value="t-shirts-polos">T-Shirts & Polos</option>
                         <option value="shirts">Shirts</option>
-                        <option value="shirts">Jacket</option>
+                        <option value="jacket">Jacket</option>
+                        <option value="hoodie">Hoodie</option>
                         <option value="jeans-pants">Jeans & Pants</option>
                         <option value="outerwear">Outerwear</option>
                         <option value="dresses-skirts">Dresses & Skirts</option>

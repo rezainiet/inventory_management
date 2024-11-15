@@ -130,7 +130,7 @@ const InventoryTable = () => {
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 text-center dark:border-strokedark">
                                             <p className="text-sm text-black dark:text-white">
-                                                ${product.price}
+                                                ৳{product.price}
                                             </p>
                                         </td>
                                         <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
